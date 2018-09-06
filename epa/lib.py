@@ -21,7 +21,7 @@ VOWELS_ALL = VOWELS + VOWELS_TILDE + VOWELS_CIRCUMFLEX + VOWELS_UP + VOWELS_TILD
 VOWELS_ALL_NOTILDE = VOWELS + VOWELS_CIRCUMFLEX + VOWELS_UP + VOWELS_CIRCUMFLEX_UP
 VOWELS_ALL_TILDE = VOWELS_TILDE + VOWELS_CIRCUMFLEX + VOWELS_TILDE_UP + VOWELS_CIRCUMFLEX_UP
 
-# Voiceless alveolar fricative /s/ https://en.wikipedia.org/wiki/Voiceless_alveolar_fricative
+# EPA character for Voiceless alveolar fricative /s/ https://en.wikipedia.org/wiki/Voiceless_alveolar_fricative
 VAF = u'ç'
 VAF_UP = u'Ç'
 
@@ -51,25 +51,48 @@ def intervowel_circumflex_sub(match):
 
 # EPA replacement functions
 def h_rules(text):
-    """Supress mute 'h'"""
-    text = re.sub(r'(?<!c)h', '', text, flags=re.IGNORECASE)
+    """Supress mute /h/"""
+
+    text = re.sub(ur'(?<!c)h', '', text, flags=re.IGNORECASE)
     return text
 
 def x_rules(text):
+    """Replacement rules for /ks/ with EPA VAF"""
+
     if text[0] == "X": text[0] = VAF.upper()
     if text[0] == "x": text[0] = VAF
 
     # Try substitution for all combination of vowels upper/lower and tildes
     for pair in [(VOWELS, VOWELS), (VOWELS_TILDE, VOWELS), (VOWELS_TILDE_UP, VOWELS), (VOWELS, VOWELS_TILDE), (VOWELS, VOWELS_TILDE_UP)]:
-        text = re.sub(r'([' + pair[0] + '])(x)([' + pair[1] + '])', intervowel_circumflex_sub, text, flags=re.IGNORECASE)
+        text = re.sub(ur'([' + pair[0] + '])(x)([' + pair[1] + '])', intervowel_circumflex_sub, text, flags=re.IGNORECASE)
 
     return text
 
 def ch_rules(text):
-    text = text.replace(u'ch', u'x')
-    text = text.replace(u'Ch', u'X')
-    text = text.replace(u'CH', u'X')
-    text = text.replace(u'cH', u'x') # weird, but who knows?
+    """Replacement rules for /∫/ (voiceless postalveolar fricative)"""
+
+    text = text.replace(ur'ch', ur'x')
+    text = text.replace(ur'Ch', ur'X')
+    text = text.replace(ur'CH', ur'X')
+    text = text.replace(ur'cH', ur'x') # weird, but who knows?
+    return text
+
+def gj_rules(text):
+    """Replacing /x/ (voiceless postalveolar fricative) with /h/"""
+    # G,J + vowel replacement
+    text = re.sub(ur'(g|j)(e|i|é|í|E|I|É|Í)', ur'h\2', text)
+    text = re.sub(ur'(G|J)(e|i|é|í|E|I|É|Í)', ur'H\2', text)
+    text = re.sub(ur'(j)(a|o|u|á|ó|ú|A|O|U|Á|Ó|Ú)', ur'h\2', text)
+    text = re.sub(ur'(J)(a|o|u|á|ó|ú|A|O|U|Á|Ó|Ú)', ur'H\2', text)
+
+    # GUE,GUI replacement
+    text = re.sub(ur'(gu|gU)(e|i|é|í|E|I|É|Í)', ur'g\2', text)
+    text = re.sub(ur'(Gu|GU)(e|i|é|í|E|I|É|Í)', ur'G\2', text)
+
+    # GÜE,GÜI replacement
+    text = re.sub(ur'(g|G)(ü)(e|i|é|í|E|I|É|Í)', ur'\1u\3', text)
+    text = re.sub(ur'(g|G)(Ü)(e|i|é|í|E|I|É|Í)', ur'\1U\3', text)
+
     return text
 
 # Main function
@@ -78,6 +101,8 @@ def cas_to_epa(text):
     text = h_rules(text)
     text = x_rules(text)
     text = ch_rules(text)
+    text = gj_rules(text)
+
     return text
 
 class EPAError(Exception):
