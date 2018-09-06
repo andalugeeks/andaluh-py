@@ -52,8 +52,7 @@ def intervowel_circumflex_sub(match):
 # EPA replacement functions
 def h_rules(text):
     """Supress mute 'h'"""
-    text = re.sub(r'(?<!c)h', '', text)
-    text = re.sub(r'(?<!C)H', '', text)
+    text = re.sub(r'(?<!c)h', '', text, flags=re.IGNORECASE)
     return text
 
 def x_rules(text):
@@ -66,11 +65,19 @@ def x_rules(text):
 
     return text
 
+def ch_rules(text):
+    text = text.replace(u'ch', u'x')
+    text = text.replace(u'Ch', u'X')
+    text = text.replace(u'CH', u'X')
+    text = text.replace(u'cH', u'x') # weird, but who knows?
+    return text
+
 # Main function
 def cas_to_epa(text):
     text = unicode(text, 'utf-8')
     text = h_rules(text)
     text = x_rules(text)
+    text = ch_rules(text)
     return text
 
 class EPAError(Exception):
