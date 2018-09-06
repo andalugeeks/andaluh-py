@@ -63,14 +63,7 @@ def x_rules(text):
 
     # Try substitution for all combination of vowels upper/lower and tildes
     for pair in [(VOWELS, VOWELS), (VOWELS_TILDE, VOWELS), (VOWELS_TILDE_UP, VOWELS), (VOWELS, VOWELS_TILDE), (VOWELS, VOWELS_TILDE_UP)]:
-        new_text = re.sub(r'([' + pair[0] + '])(x)([' + pair[1] + '])', intervowel_circumflex_sub, text, flags=re.IGNORECASE)
-        
-        # If a substitution was done, there's no need to continue trying
-        if new_text != text: 
-            text = new_text
-            break
-        else:
-            text = new_text
+        text = re.sub(r'([' + pair[0] + '])(x)([' + pair[1] + '])', intervowel_circumflex_sub, text, flags=re.IGNORECASE)
 
     return text
 
