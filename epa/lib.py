@@ -9,13 +9,12 @@
 import re
 from exceptions import Exception
 
-# Vowels and its variants with accents
-VOWELS = 'aeiou'
-VOWELS_TILDE = 'áéíóú'
-VOWELS_CIRCUMFLEX = 'âêîôû'
-VOWELS_UP = 'AEIOU'
-VOWELS_TILDE_UP = 'ÁÉÍÓÚ'
-VOWELS_CIRCUMFLEX_UP = 'ÂÊÎÔÛ'
+VOWELS = u'aeiou'
+VOWELS_TILDE = u'áéíóú'
+VOWELS_CIRCUMFLEX = u'âêîôû'
+VOWELS_UP = u'AEIOU'
+VOWELS_TILDE_UP = u'ÁÉÍÓÚ' 
+VOWELS_CIRCUMFLEX_UP = u'ÂÊÎÔÛ'
 
 # Pre calculation of vowel groups and its variants with accents. Useful for further search & replacement
 VOWELS_ALL = VOWELS + VOWELS_TILDE + VOWELS_CIRCUMFLEX + VOWELS_UP + VOWELS_TILDE_UP + VOWELS_CIRCUMFLEX_UP
@@ -23,17 +22,18 @@ VOWELS_ALL_NOTILDE = VOWELS + VOWELS_CIRCUMFLEX + VOWELS_UP + VOWELS_CIRCUMFLEX_
 VOWELS_ALL_TILDE = VOWELS_TILDE + VOWELS_CIRCUMFLEX + VOWELS_TILDE_UP + VOWELS_CIRCUMFLEX_UP
 
 # Voiceless alveolar fricative /s/ https://en.wikipedia.org/wiki/Voiceless_alveolar_fricative
-VAF = 'ç'
-VAF_UP = 'Ç'
+VAF = u'ç'
+VAF_UP = u'Ç'
 
 # Auxiliary functions
 def get_vowel_circumflex(vowel):
-    if vowel in VOWELS_ALL_NOTILDE:
-        i = VOWELS_ALL_NOTILDE.find(vowel) + 6
-        return VOWELS_ALL_NOTILDE[i: i+2]
-    elif vowel in VOWELS_ALL_TILDE:
-        i = VOWELS_ALL_TILDE.find(vowel) + 10
-        return VOWELS_ALL_TILDE[i: i+1]
+
+    if vowel and vowel in VOWELS_ALL_NOTILDE:
+        i = VOWELS_ALL_NOTILDE.find(vowel) + 5
+        return VOWELS_ALL_NOTILDE[i: i+1][0]
+    elif vowel and vowel in VOWELS_ALL_TILDE:
+        i = VOWELS_ALL_TILDE.find(vowel) + 5
+        return VOWELS_ALL_TILDE[i: i+1][0]
     else:
         raise EPAError('Not a vowel', vowel)
 
@@ -59,7 +59,6 @@ def h_rules(text):
 def x_rules(text):
     if text[0] == "X": text[0] = VAF.upper()
     if text[0] == "x": text[0] = VAF
-    # text = re.sub(r'([aeiou])(x)([aeiou])', r'\1çç\3', text)
 
     # Try substitution for all combination of vowels upper/lower and tildes
     for pair in [(VOWELS, VOWELS), (VOWELS_TILDE, VOWELS), (VOWELS_TILDE_UP, VOWELS), (VOWELS, VOWELS_TILDE), (VOWELS, VOWELS_TILDE_UP)]:
@@ -69,9 +68,7 @@ def x_rules(text):
 
 # Main function
 def cas_to_epa(text):
-    # text = text.replace('c', 'ç').replace('C', 'Ç').replace('s', 'ç').replace('S', 'Ç')
-    # text = text.replace('s', 'ç').replace('S', 'Ç')
-
+    text = unicode(text, 'utf-8')
     text = h_rules(text)
     text = x_rules(text)
     return text
