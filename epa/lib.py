@@ -95,6 +95,60 @@ def gj_rules(text):
 
     return text
 
+def v_rules(text):
+    """Replacing all /v/ (Voiced labiodental fricative) with /b/"""
+
+    def replace_with_case(match):
+        n_char = match.group(1)
+        v_char = match.group(2)
+
+        if n_char.islower() and v_char.islower():
+            return 'mb'
+        if n_char.isupper() and v_char.isupper():
+            return 'MB'
+        if n_char.isupper() and v_char.islower():
+            return 'Mb'
+        else: 
+            return 'mB'
+
+    # NV -> NB -> MB (i.e.: envidia -> embidia)
+    text = re.sub(ur'(n)(v)', replace_with_case, text, flags=re.IGNORECASE)
+
+    # v -> b
+    text = re.sub(ur'v', ur'b', text)
+    text = re.sub(ur'V', ur'B', text)
+
+    return text
+
+def ll_rules(text):
+    """Replacing /ʎ/ (digraph ll) with Greek Y for /ʤ/ sound (voiced postalveolar affricate)"""
+
+    def replace_with_case(match):
+        l1_char = match.group(1)
+
+        if l1_char.islower():
+            return 'y'
+        else:
+            return 'Y'
+
+    text = re.sub(ur'(l)(l)', replace_with_case, text, flags=re.IGNORECASE)
+    return text
+
+def l_rules(text):
+    """Rotating /l/ with /r/"""
+
+    def replace_with_case(match):
+        l_char = match.group(1)
+        next_char = match.group(2)
+
+        if l_char.islower():
+            return 'r' + next_char
+        else: 
+            return 'R' + next_char
+
+    text = re.sub(ur'(l)(b|c|g|s|d|f|g|h|m|n|p|q|r|t|x)', replace_with_case, text, flags=re.IGNORECASE)
+    return text
+
 # Main function
 def cas_to_epa(text):
     text = unicode(text, 'utf-8')
@@ -102,6 +156,9 @@ def cas_to_epa(text):
     text = x_rules(text)
     text = ch_rules(text)
     text = gj_rules(text)
+    text = v_rules(text)
+    text = ll_rules(text)
+    text = l_rules(text)
 
     return text
 
