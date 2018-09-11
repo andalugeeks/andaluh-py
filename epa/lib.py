@@ -56,6 +56,8 @@ def h_rules(text):
     text = re.sub(ur'(?<!c)h', '', text, flags=re.IGNORECASE)
     return text
 
+#TODO: When there's TILDE, do not replace with circumflex
+#TODO: Review why "Xilofono" crashes
 def x_rules(text):
     """Replacement rules for /ks/ with EPA VAF"""
 
@@ -77,6 +79,7 @@ def ch_rules(text):
     text = text.replace(ur'cH', ur'x') # weird, but who knows?
     return text
 
+#TODO: when 'j' is last character of word the rules does not affect.
 def gj_rules(text):
     """Replacing /x/ (voiceless postalveolar fricative) with /h/"""
     # G,J + vowel replacement
@@ -149,6 +152,23 @@ def l_rules(text):
     text = re.sub(ur'(l)(b|c|g|s|d|f|g|h|m|n|p|q|r|t|x)', replace_with_case, text, flags=re.IGNORECASE)
     return text
 
+def vaf_rules(text):
+    """Replacing Voiceless alveolar fricative (vaf) /s/ /θ/ with EPA's ç/Ç"""
+
+    def replace_with_case(match):
+        l_char = match.group(1)
+        next_char = match.group(2)
+
+        if l_char.islower():
+            return VAF + next_char
+        else:
+            return VAF_UP + next_char
+
+    text = re.sub(ur'(z|s)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)', replace_with_case, text, flags=re.IGNORECASE)
+    text = re.sub(ur'(c)(e|i|é|í)', replace_with_case, text, flags=re.IGNORECASE)
+
+    return text
+
 # Main function
 def cas_to_epa(text):
     text = unicode(text, 'utf-8')
@@ -159,6 +179,7 @@ def cas_to_epa(text):
     text = v_rules(text)
     text = ll_rules(text)
     text = l_rules(text)
+    text = vaf_rules(text)
 
     return text
 
