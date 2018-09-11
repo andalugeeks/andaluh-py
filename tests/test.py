@@ -18,7 +18,7 @@ sys.path.insert(0, parent_dir)
 import epa
 
 # Let's test
-assert epa.cas_to_epa('Haber, que el Éxito asfixia si no eres Chungo.') == u'aber, que el Êççito asfîççia çi no eres Xungo.'
+assert epa.cas_to_epa('Xenomorfo dice: [haber], que el Éxito asfixia si no eres un xilófono Chungo.') == u'Çenomorfo diçe: [aber], que el Éççito asfîççia çi no eres un çilófono Xungo.'
 assert epa.cas_to_epa('Lleva un Guijarrito, para la VERGÜENZA!') == u'Yeba un Giharrito, para la BERGUENÇA!'
 assert epa.cas_to_epa('VALLA valla, si vas de ENVIDIA') == u'BAYA baya, çi bas de EMBIDIA'
 assert epa.cas_to_epa('Alrededor de la Alpaca habia un ALfabeto ALTIVO de almanaques') == u'Arrededor de la Arpaca abia un ARfabeto ARTIBO de armanaques'

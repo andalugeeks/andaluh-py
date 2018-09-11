@@ -28,26 +28,18 @@ VAF_UP = u'Ç'
 # Auxiliary functions
 def get_vowel_circumflex(vowel):
 
+    # If no tilde, replace with circumflex
     if vowel and vowel in VOWELS_ALL_NOTILDE:
         i = VOWELS_ALL_NOTILDE.find(vowel) + 5
         return VOWELS_ALL_NOTILDE[i: i+1][0]
+
+    # If vowel with tilde, leave it as it is
     elif vowel and vowel in VOWELS_ALL_TILDE:
-        i = VOWELS_ALL_TILDE.find(vowel) + 5
-        return VOWELS_ALL_TILDE[i: i+1][0]
+        return vowel
+
+    # You shouldn't call this method with a non vowel
     else:
         raise EPAError('Not a vowel', vowel)
-
-def intervowel_circumflex_sub(match):
-    prev_char = match.group(1)
-    consonant_char = match.group(2)
-    next_char = match.group(3)
-
-    prev_char = get_vowel_circumflex(prev_char)
-
-    if consonant_char.isupper(): 
-        return prev_char + VAF_UP*2 + next_char
-    else: 
-        return prev_char + VAF*2 + next_char
 
 # EPA replacement functions
 def h_rules(text):
@@ -56,17 +48,39 @@ def h_rules(text):
     text = re.sub(ur'(?<!c)h', '', text, flags=re.IGNORECASE)
     return text
 
-#TODO: When there's TILDE, do not replace with circumflex
-#TODO: Review why "Xilofono" crashes
 def x_rules(text):
     """Replacement rules for /ks/ with EPA VAF"""
 
-    if text[0] == "X": text[0] = VAF.upper()
-    if text[0] == "x": text[0] = VAF
+    def replace_with_case(match):
+        whitespaces = match.group(1)
+        x_char = match.group(2)
 
-    # Try substitution for all combination of vowels upper/lower and tildes
-    for pair in [(VOWELS, VOWELS), (VOWELS_TILDE, VOWELS), (VOWELS_TILDE_UP, VOWELS), (VOWELS, VOWELS_TILDE), (VOWELS, VOWELS_TILDE_UP)]:
-        text = re.sub(ur'([' + pair[0] + '])(x)([' + pair[1] + '])', intervowel_circumflex_sub, text, flags=re.IGNORECASE)
+        if x_char.islower():
+            return whitespaces + VAF
+        else:
+            return whitespaces + VAF_UP
+
+    def replace_intervowel_with_case(match):
+        prev_char = match.group(1)
+        x_char = match.group(2)
+        next_char = match.group(3)
+
+        prev_char = get_vowel_circumflex(prev_char)
+
+        if x_char.isupper():
+            return prev_char + VAF_UP*2 + next_char
+        else:
+            return prev_char + VAF*2 + next_char
+
+    # If the text begins with /ks/
+    if text[0] == "X": text = VAF_UP + text[1:]
+    if text[0] == "x": text = VAF + text[1:]
+
+    # If the /ks/ sound is between vowels
+    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(x)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)', replace_intervowel_with_case, text, flags=re.IGNORECASE)
+
+    # Every word starting with /ks/
+    text = re.sub(ur'([\W]+)(x|X)', replace_with_case, text, flags=re.IGNORECASE)
 
     return text
 
@@ -79,7 +93,6 @@ def ch_rules(text):
     text = text.replace(ur'cH', ur'x') # weird, but who knows?
     return text
 
-#TODO: when 'j' is last character of word the rules does not affect.
 def gj_rules(text):
     """Replacing /x/ (voiceless postalveolar fricative) with /h/"""
     # G,J + vowel replacement
