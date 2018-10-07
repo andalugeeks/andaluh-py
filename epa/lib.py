@@ -182,6 +182,76 @@ def vaf_rules(text):
 
     return text
 
+def word_ending_rules(text):
+
+    def replace_d_end_with_case(match):
+        stressed_rules = {
+            u'a':u'â', u'e':u'ê', u'A':u'Â', u'E':u'Ê',
+            u'i':u'î', u'o':u'ô', u'u':u'û', u'I':u'Î', u'O':u'Ô', u'U':u'Û'
+        }
+        unstressed_rules = {
+            u'ad':u'á', u'aD':u'á', u'ed':u'é', u'eD':u'é',
+            u'AD':u'Á', u'Ad':u'Á', u'ED':u'É', u'Ed':u'É',
+            u'id':u'îh', u'od':u'ôh', u'ud':u'ûh',
+            u'iD':u'îH', u'oD':u'ôH', u'uD':u'ûH',
+            u'ID':u'ÎH', u'OD':u'ÔH', u'UD':u'ÛH',
+            u'Id':u'Îh', u'Od':u'Ôh', u'Ud':u'Ûh'
+        }
+
+        word = match.group(0)
+        prefix = match.group(1)
+        suffix = match.group(2)
+
+        if any(s in word for s in (u'á',u'é',u'í',u'ó',u'ú',u'Á',u'É',u'Í',u'Ó',u'Ú')):
+            return prefix + stressed_rules[suffix[0]]
+        else:
+            return prefix + unstressed_rules[suffix]
+
+    def replace_lzr_end_with_case(match):
+        repl_rules = {
+            u'a':u'â', u'e':u'ê', u'i':u'î', u'o':u'ô', u'u':u'û',
+            u'A':u'Â', u'E':u'Ê',u'I':u'Î', u'O':u'Ô', u'U':u'Û'
+        }
+
+        word = match.group(0)
+        prefix = match.group(1)
+        suffix_vowel = match.group(2)
+        suffix_const = match.group(3)
+
+        if any(s in word for s in (u'á',u'é',u'í',u'ó',u'ú',u'Á',u'É',u'Í',u'Ó',u'Ú')):
+            return prefix + repl_rules[suffix_vowel]
+        else:
+            if suffix_const.isupper():
+                return prefix + repl_rules[suffix_vowel] + 'H'
+            else:
+                return prefix + repl_rules[suffix_vowel] + 'h'
+
+    def replace_s_end_with_case(match):
+        repl_rules = {
+            u'a':u'â', u'e':u'ê', u'i':u'î', u'o':u'ô', u'u':u'û',
+            u'A':u'Â', u'E':u'Ê',u'I':u'Î', u'O':u'Ô', u'U':u'Û',
+            u'á':u'â', u'é':u'ê', u'í':u'î', u'ó':u'ô', u'Ú':u'û',
+            u'Á':u'Â', u'É':u'Ê',u'Í':u'Î', u'Ó':u'Ô', u'Ú':u'Û'
+        }
+
+        prefix = match.group(1)
+        suffix_vowel = match.group(2)
+        suffix_const = match.group(3)
+
+        if suffix_vowel in (u'á',u'é',u'í',u'ó',u'ú',u'Á',u'É',u'Í',u'Ó',u'Ú'):
+            if suffix_const.isupper():
+                return prefix + repl_rules[suffix_vowel] + 'H'
+            else:
+                return prefix + repl_rules[suffix_vowel] + 'h'
+        else:
+            return prefix + repl_rules[suffix_vowel]
+
+    text = re.sub(ur'\b(\w+?)(ad|ed|id|od|ud)\b', replace_d_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+    text = re.sub(ur'\b(\w+?)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(s)\b', replace_s_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+    text = re.sub(ur'\b(\w+?)(a|e|i|o|u)(l|z|r)\b', replace_lzr_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+
+    return text
+
 # Main function
 def cas_to_epa(text):
     text = unicode(text, 'utf-8')
@@ -193,6 +263,7 @@ def cas_to_epa(text):
     text = ll_rules(text)
     text = l_rules(text)
     text = vaf_rules(text)
+    text = word_ending_rules(text)
 
     return text
 
