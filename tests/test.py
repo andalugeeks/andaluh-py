@@ -18,10 +18,10 @@ sys.path.insert(0, parent_dir)
 import epa
 
 # Let's test
-assert epa.cas_to_epa('Xenomorfo dice: [haber], que el Éxito asfixia si no eres un xilófono Chungo.') == u'Çenomorfo diçe: [abêh], que el Éççito asfîççia çi no erê un çilófono Xungo.'
+assert epa.cas_to_epa('Xenomorfo dice: [haber], que el Éxito asfixia si no eres un xilófono Chungo.') == u'Çenomorfo diçe: [abêh], que el Éççito âffîççia çi no erê un çilófono Xungo.'
 assert epa.cas_to_epa('Lleva un Guijarrito, para la VERGÜENZA!') == u'Yeba un Giharrito, para la BERGUENÇA!'
 assert epa.cas_to_epa('VALLA valla, si vas de ENVIDIA') == u'BAYA baya, çi bâ de EMBIDIA'
 assert epa.cas_to_epa('Alrededor de la Alpaca había un ALfabeto ALTIVO de almanaques') == u'Arrededôh de la Arpaca abía un ARfabeto ARTIBO de armanaquê'
 assert epa.cas_to_epa('En Zaragoza se Sabía SÉriamente sILBAR') == u'En Çaragoça çe Çabía ÇÉriamente çIRBÂH'
-assert epa.cas_to_epa('Su aCTItud me parece perfécta.') == u'Çu aCTItûh me pareçe perfécta.'
-assert epa.cas_to_epa('Venid a correr en Cádiz con maldad, para escuchar a Albéniz tocar ápud con virtud.') == u'Benîh a corrêh en Cádî con mardá, para escuxâh a Arbénî tocâh ápû con birtûh.'
+assert epa.cas_to_epa('Transportandonos al abstracto solsticio, el plástico aislante asfixió al pseudoescritor con aMNesia para ConMemorar broncas') == u'Trâpportandonô al âttrâtto çorttiçio, el pláttico aîl-lante âffîççió al çeudoêccritôh con âNNeçia para CoMMemorâh broncâ'
+assert epa.cas_to_epa('Venid a correr en Cádiz con actitud y maldad, para escuchar a Albéniz tocar ápud con virtud de laúd.') == u'Benîh a corrêh en Cádî con âttitûh y mardá, para êccuxâh a Arbénî tocâh ápû con birtûh de laúd.'

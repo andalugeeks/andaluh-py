@@ -165,6 +165,20 @@ def l_rules(text):
     text = re.sub(ur'(l)(b|c|g|s|d|f|g|h|m|n|p|q|r|t|x)', replace_with_case, text, flags=re.IGNORECASE)
     return text
 
+def psico_pseudo_rules(text):
+    """Drops /p/ for pseudo- or psico- prefixes"""
+
+    def replace_psicpseud_with_case(match):
+        ps_syllable = match.group(1)
+
+        if ps_syllable[0] == u'p':
+            return ps_syllable[1:]
+        else:
+            return ps_syllable[1].upper() + ps_syllable[2:]
+
+    text = re.sub(ur'(psic|pseud)', replace_psicpseud_with_case, text, flags=re.IGNORECASE)
+    return text
+
 def vaf_rules(text):
     """Replacing Voiceless alveolar fricative (vaf) /s/ /θ/ with EPA's ç/Ç"""
 
@@ -179,6 +193,79 @@ def vaf_rules(text):
 
     text = re.sub(ur'(z|s)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)', replace_with_case, text, flags=re.IGNORECASE)
     text = re.sub(ur'(c)(e|i|é|í)', replace_with_case, text, flags=re.IGNORECASE)
+
+    return text
+
+def digraph_rules(text):
+    """Replacement of consecutive consonant with EPA VAF"""
+
+    def replace_mn_with_case(match):
+        vowel_char = match.group(1)
+        n_char = match.group(3)
+
+        return get_vowel_circumflex(vowel_char) + n_char*2
+
+    def replace_nm_with_case(match):
+        vowel_char = match.group(1)
+        m_char = match.group(3)
+
+        return vowel_char + m_char*2
+
+    def replace_lstrst_with_case(match):
+        vowel_char = match.group(1)
+        lr_char = match.group(2)
+        t_char = match.group(4)
+
+        if lr_char == u'l':
+            lr_char == 'r'
+        elif lr_char == u'L':
+            lr_char == 'R'
+        else:
+            pass
+
+        return vowel_char + lr_char + t_char*2
+
+    def replace_abs_with_case(match):
+        vowel_char = match.group(1)
+        cons_char = match.group(3)
+
+        return get_vowel_circumflex(vowel_char) + cons_char*2
+
+    def replace_trans_with_case(match):
+        tr_char = match.group(1)
+        vowel_char = match.group(2)
+        cons_char = match.group(4)
+
+        return tr_char + get_vowel_circumflex(vowel_char) + cons_char*2
+
+    def replace_digraph_with_case(match):
+        vowel_char = match.group(1)
+        to_drop_char = match.group(2)
+        digraph_char = match.group(3)
+
+        # Digraph exceptions
+        if (to_drop_char + digraph_char).lower() in (u'bl', u'cl', u'fl', u'gl', u'pl', u'br', u'cr', u'dr', u'fr', u'pr', u'tr'):
+            return vowel_char + to_drop_char + digraph_char
+        # Double 'l' digraphs => 'l-l'
+        elif digraph_char.lower() == u'l':
+            return get_vowel_circumflex(vowel_char) + digraph_char + u'-' + digraph_char
+        # General digraph rules applies
+        else:
+            return get_vowel_circumflex(vowel_char) + digraph_char*2
+
+    # amnesia => ânneçia.
+    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(m)(n)', replace_mn_with_case, text, flags=re.IGNORECASE)
+    # conmemorar => commemorâh
+    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(n)(m)', replace_nm_with_case, text, flags=re.IGNORECASE)
+    # intersticial / solsticio / superstición / cárstico => interttiçiâh / çorttiçio / çuperttiçión / cárttico
+    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(l|r)(s)(t)', replace_lstrst_with_case, text, flags=re.IGNORECASE)
+    # abstracto => âttrâtto
+    text = re.sub(ur'(a)(bs)([b-df-hj-np-tv-xz])', replace_abs_with_case, text, flags=re.IGNORECASE)
+    # transporte => Trâpporte
+    text = re.sub(ur'(tr)(a)(ns)([b-df-hj-np-tv-xz])', replace_trans_with_case, text, flags=re.IGNORECASE)
+
+    # General digraph rules
+    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(b|c|d|f|g|j|p|s|t|x|z)(b|c|ç|d|f|g|h|l|m|n|p|q|r|t|x|y)', replace_digraph_with_case, text, flags=re.IGNORECASE)
 
     return text
 
@@ -230,7 +317,7 @@ def word_ending_rules(text):
         repl_rules = {
             u'a':u'â', u'e':u'ê', u'i':u'î', u'o':u'ô', u'u':u'û',
             u'A':u'Â', u'E':u'Ê',u'I':u'Î', u'O':u'Ô', u'U':u'Û',
-            u'á':u'â', u'é':u'ê', u'í':u'î', u'ó':u'ô', u'Ú':u'û',
+            u'á':u'â', u'é':u'ê', u'í':u'î', u'ó':u'ô', u'ú':u'û',
             u'Á':u'Â', u'É':u'Ê',u'Í':u'Î', u'Ó':u'Ô', u'Ú':u'Û'
         }
 
@@ -262,7 +349,9 @@ def cas_to_epa(text):
     text = v_rules(text)
     text = ll_rules(text)
     text = l_rules(text)
+    text = psico_pseudo_rules(text)
     text = vaf_rules(text)
+    text = digraph_rules(text)
     text = word_ending_rules(text)
 
     return text
