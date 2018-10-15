@@ -162,7 +162,7 @@ def l_rules(text):
         else: 
             return 'R' + next_char
 
-    text = re.sub(ur'(l)(b|c|ç|Ç|g|s|d|f|g|h|k|m|n|p|q|r|t|x|z)', replace_with_case, text, flags=re.IGNORECASE)
+    text = re.sub(ur'(l)(b|c|ç|Ç|g|s|d|f|g|h|k|m|p|q|r|t|x|z)', replace_with_case, text, flags=re.IGNORECASE)
     return text
 
 def psico_pseudo_rules(text):
@@ -264,8 +264,8 @@ def digraph_rules(text):
     # transporte => Trâpporte
     text = re.sub(ur'(tr)(a)(ns)([b-df-hj-np-tv-xz])', replace_trans_with_case, text, flags=re.IGNORECASE)
 
-    # General digraph rules
-    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(b|c|d|f|g|j|p|s|t|x|z)(b|c|ç|d|f|g|h|l|m|n|p|q|r|t|x|y)', replace_digraph_with_case, text, flags=re.IGNORECASE)
+    # General digraph rules. TODO: reduce consonant combinations to a list and remove exceptions to improve performance.
+    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(b|c|d|f|g|j|l|p|s|t|x|z)(b|c|ç|Ç|d|f|g|h|l|m|n|p|q|r|t|x|y)', replace_digraph_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
     return text
 
