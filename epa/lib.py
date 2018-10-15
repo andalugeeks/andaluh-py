@@ -199,17 +199,11 @@ def vaf_rules(text):
 def digraph_rules(text):
     """Replacement of consecutive consonant with EPA VAF"""
 
-    def replace_mn_with_case(match):
+    def replace_nm_with_case(match):
         vowel_char = match.group(1)
         n_char = match.group(3)
 
         return get_vowel_circumflex(vowel_char) + n_char*2
-
-    def replace_nm_with_case(match):
-        vowel_char = match.group(1)
-        m_char = match.group(3)
-
-        return vowel_char + m_char*2
 
     def replace_lstrst_with_case(match):
         vowel_char = match.group(1)
@@ -253,10 +247,8 @@ def digraph_rules(text):
         else:
             return get_vowel_circumflex(vowel_char) + digraph_char*2
 
-    # amnesia => ânneçia.
-    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(m)(n)', replace_mn_with_case, text, flags=re.IGNORECASE)
-    # conmemorar => commemorâh
-    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(n)(m)', replace_nm_with_case, text, flags=re.IGNORECASE)
+    # amnesia => ânneçia | conmemorar => cômmemorâh
+    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(n|m)(m|n)', replace_nm_with_case, text, flags=re.IGNORECASE)
     # intersticial / solsticio / superstición / cárstico => interttiçiâh / çorttiçio / çuperttiçión / cárttico
     text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(l|r)(s)(t)', replace_lstrst_with_case, text, flags=re.IGNORECASE)
     # abstracto => âttrâtto | adscrito => âccrito
