@@ -232,6 +232,12 @@ def digraph_rules(text):
 
         return tr_char + get_vowel_circumflex(vowel_char) + cons_char*2
 
+    def replace_l_with_case(match):
+        vowel_char = match.group(1)
+        digraph_char = match.group(3)
+
+        return get_vowel_circumflex(vowel_char) + digraph_char + u'-' + digraph_char
+
     def replace_digraph_with_case(match):
         vowel_char = match.group(1)
         to_drop_char = match.group(2)
@@ -240,9 +246,6 @@ def digraph_rules(text):
         # Digraph exceptions
         if (to_drop_char + digraph_char).lower() in (u'bl', u'cl', u'fl', u'gl', u'pl', u'br', u'cr', u'dr', u'fr', u'gr', u'pr', u'tr'):
             return vowel_char + to_drop_char + digraph_char
-        # Double 'l' digraphs => 'l-l'
-        elif digraph_char.lower() == u'l':
-            return get_vowel_circumflex(vowel_char) + digraph_char + u'-' + digraph_char
         # General digraph rules applies
         else:
             return get_vowel_circumflex(vowel_char) + digraph_char*2
@@ -255,6 +258,8 @@ def digraph_rules(text):
     text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(bs|ds|ns)([bc-dfgh-jklmnn-pqrst-vwxyz]|ç|Ç)', replace_bsns_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     # transporte => Trâpporte
     text = re.sub(ur'(tr)(a)(ns)([b-df-hj-np-tv-xz])', replace_trans_with_case, text, flags=re.IGNORECASE)
+    # atlántico => âl-lántico | orla => ôl-la | adlátere => âl-látere | tesla => têl-la ...
+    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(d|j|r|s|t|x|z)(l)', replace_l_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
     # General digraph rules. TODO: reduce consonant combinations to a list and remove exceptions to improve performance.
     text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(b|c|d|f|g|j|l|p|s|t|x|z)(b|c|ç|Ç|d|f|g|h|l|m|n|p|q|r|t|x|y)', replace_digraph_with_case, text, flags=re.IGNORECASE|re.UNICODE)
