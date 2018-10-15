@@ -244,7 +244,7 @@ def digraph_rules(text):
         digraph_char = match.group(3)
 
         # Digraph exceptions
-        if (to_drop_char + digraph_char).lower() in (u'bl', u'cl', u'fl', u'gl', u'pl', u'br', u'cr', u'dr', u'fr', u'pr', u'tr'):
+        if (to_drop_char + digraph_char).lower() in (u'bl', u'cl', u'fl', u'gl', u'pl', u'br', u'cr', u'dr', u'fr', u'gr', u'pr', u'tr'):
             return vowel_char + to_drop_char + digraph_char
         # Double 'l' digraphs => 'l-l'
         elif digraph_char.lower() == u'l':
