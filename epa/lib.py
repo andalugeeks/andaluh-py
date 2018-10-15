@@ -262,7 +262,7 @@ def digraph_rules(text):
     text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(d|j|r|s|t|x|z)(l)', replace_l_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
     # General digraph rules. TODO: reduce consonant combinations to a list and remove exceptions to improve performance.
-    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(b|c|d|f|g|j|l|p|s|t|x|z)(b|c|ç|Ç|d|f|g|h|l|m|n|p|q|r|t|x|y)', replace_digraph_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(b|c|ç|Ç|d|f|g|j|l|p|s|t|x|z)(b|c|ç|Ç|d|f|g|h|l|m|n|p|q|r|t|x|y)', replace_digraph_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
     return text
 
