@@ -162,7 +162,7 @@ def l_rules(text):
         else: 
             return 'R' + next_char
 
-    text = re.sub(ur'(l)(b|c|g|s|d|f|g|h|m|n|p|q|r|t|x)', replace_with_case, text, flags=re.IGNORECASE)
+    text = re.sub(ur'(l)(b|c|ç|Ç|g|s|d|f|g|h|k|m|n|p|q|r|t|x|z)', replace_with_case, text, flags=re.IGNORECASE)
     return text
 
 def psico_pseudo_rules(text):
