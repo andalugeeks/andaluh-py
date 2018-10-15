@@ -252,7 +252,7 @@ def digraph_rules(text):
     # intersticial / solsticio / superstición / cárstico => interttiçiâh / çorttiçio / çuperttiçión / cárttico
     text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(l|r)(s)(t)', replace_lstrst_with_case, text, flags=re.IGNORECASE)
     # abstracto => âttrâtto | adscrito => âccrito
-    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(bs|ds)([bc-dfgh-jklmnn-pqrst-vwxyz]|ç|Ç)', replace_bsns_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(bs|ds|ns)([bc-dfgh-jklmnn-pqrst-vwxyz]|ç|Ç)', replace_bsns_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     # transporte => Trâpporte
     text = re.sub(ur'(tr)(a)(ns)([b-df-hj-np-tv-xz])', replace_trans_with_case, text, flags=re.IGNORECASE)
 
