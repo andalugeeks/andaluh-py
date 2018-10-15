@@ -225,7 +225,7 @@ def digraph_rules(text):
 
         return vowel_char + lr_char + t_char*2
 
-    def replace_abs_with_case(match):
+    def replace_bsns_with_case(match):
         vowel_char = match.group(1)
         cons_char = match.group(3)
 
@@ -259,8 +259,8 @@ def digraph_rules(text):
     text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(n)(m)', replace_nm_with_case, text, flags=re.IGNORECASE)
     # intersticial / solsticio / superstición / cárstico => interttiçiâh / çorttiçio / çuperttiçión / cárttico
     text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(l|r)(s)(t)', replace_lstrst_with_case, text, flags=re.IGNORECASE)
-    # abstracto => âttrâtto
-    text = re.sub(ur'(a)(bs)([b-df-hj-np-tv-xz])', replace_abs_with_case, text, flags=re.IGNORECASE)
+    # abstracto => âttrâtto | adscrito => âccrito
+    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(bs|ds)([bc-dfgh-jklmnn-pqrst-vwxyz]|ç|Ç)', replace_bsns_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     # transporte => Trâpporte
     text = re.sub(ur'(tr)(a)(ns)([b-df-hj-np-tv-xz])', replace_trans_with_case, text, flags=re.IGNORECASE)
 
