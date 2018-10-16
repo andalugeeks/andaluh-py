@@ -25,6 +25,25 @@ VOWELS_ALL_TILDE = VOWELS_TILDE + VOWELS_CIRCUMFLEX + VOWELS_TILDE_UP + VOWELS_C
 VAF = u'ç'
 VAF_UP = u'Ç'
 
+# Digraphs producers. (vowel)(const)(const) that triggers the general digraph rule
+DIGRAPHS = [
+    u"bb", u"bc", u"bç", u"bÇ", u"bd", u"bf", u"bg", u"bh", u"bm", u"bn", u"bp", u"bq", u"bt", u"bx", u"by", u"cb", u"cc",
+    u"cç", u"cÇ", u"cd", u"cf", u"cg", u"ch", u"cm", u"cn", u"cp", u"cq", u"ct", u"cx", u"cy",
+    u"db", u"dc", u"dç", u"dÇ", u"dd", u"df", u"dg", u"dh", u"dl", u"dm", u"dn", u"dp", u"dq", u"dt", u"dx", u"dy",
+    u"fb", u"fc", u"fç", u"fÇ", u"fd", u"ff", u"fg", u"fh", u"fm", u"fn", u"fp", u"fq", u"ft", u"fx", u"fy",
+    u"gb", u"gc", u"gç", u"gÇ", u"gd", u"gf", u"gg", u"gh", u"gm", u"gn", u"gp", u"gq", u"gt", u"gx", u"gy",
+    u"jb", u"jc", u"jç", u"jÇ", u"jd", u"jf", u"jg", u"jh", u"jl", u"jm", u"jn", u"jp", u"jq", u"jr", u"jt", u"jx", u"jy",
+    u"lb", u"lc", u"lç", u"lÇ", u"ld", u"lf", u"lg", u"lh", u"ll", u"lm", u"ln", u"lp", u"lq", u"lr", u"lt", u"lx", u"ly",
+    u"mm", u'mn',
+    u'nm', u'nn',
+    u"pb", u"pc", u"pç", u"pÇ", u"pd", u"pf", u"pg", u"ph", u"pm", u"pn", u"pp", u"pq", u"pt", u"px", u"py",
+    u"rn",
+    u"sb", u"sc", u"sç", u"sÇ", u"sd", u"sf", u"sg", u"sh", u"sk", u"sl", u"sm", u"sn", u"sp", u"sq", u"sr", u"st", u"sx", u"sy",
+    u"tb", u"tc", u"tç", u"tÇ", u"td", u"tf", u"tg", u"th", u"tl", u"tm", u"tn", u"tp", u"tq", u"tt", u"tx", u"ty",
+    u"xb", u"xc", u"xç", u"xÇ", u"xd", u"xf", u"xg", u"xh", u"xl", u"xm", u"xn", u"xp", u"xq", u"xr", u"xt", u"xx", u"xy",
+    u"zb", u"zc", u"zç", u"zÇ", u"zd", u"zf", u"zg", u"zh", u"zl", u"zm", u"zn", u"zp", u"zq", u"zr", u"zt", u"zx", "zy"
+]
+
 # Auxiliary functions
 def get_vowel_circumflex(vowel):
 
@@ -199,12 +218,6 @@ def vaf_rules(text):
 def digraph_rules(text):
     """Replacement of consecutive consonant with EPA VAF"""
 
-    def replace_nm_with_case(match):
-        vowel_char = match.group(1)
-        n_char = match.group(3)
-
-        return get_vowel_circumflex(vowel_char) + n_char*2
-
     def replace_lstrst_with_case(match):
         vowel_char = match.group(1)
         lr_char = match.group(2)
@@ -240,18 +253,10 @@ def digraph_rules(text):
 
     def replace_digraph_with_case(match):
         vowel_char = match.group(1)
-        to_drop_char = match.group(2)
-        digraph_char = match.group(3)
+        to_drop_char, digraph_char = match.group(2)
 
-        # Digraph exceptions
-        if (to_drop_char + digraph_char).lower() in (u'bl', u'cl', u'fl', u'gl', u'pl', u'br', u'cr', u'dr', u'fr', u'gr', u'pr', u'tr', u'tt'):
-            return vowel_char + to_drop_char + digraph_char
-        # General digraph rules applies
-        else:
-            return get_vowel_circumflex(vowel_char) + digraph_char*2
+        return get_vowel_circumflex(vowel_char) + digraph_char*2
 
-    # amnesia => ânneçia | conmemorar => cômmemorâh
-    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(n|m)(m|n)', replace_nm_with_case, text, flags=re.IGNORECASE)
     # intersticial / solsticio / superstición / cárstico => interttiçiâh / çorttiçio / çuperttiçión / cárttico
     text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(l|r)(s)(t)', replace_lstrst_with_case, text, flags=re.IGNORECASE)
     # abstracto => âttrâtto | adscrito => âccrito
@@ -261,8 +266,8 @@ def digraph_rules(text):
     # atlántico => âl-lántico | orla => ôl-la | adlátere => âl-látere | tesla => têl-la ...
     text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(d|j|r|s|t|x|z)(l)', replace_l_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
-    # General digraph rules. TODO: reduce consonant combinations to a list and remove exceptions to improve performance.
-    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(b|c|ç|Ç|d|f|g|j|l|p|s|t|x|z)(b|c|ç|Ç|d|f|g|h|l|m|n|p|q|r|t|x|y)', replace_digraph_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+    # General digraph rules.
+    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(' + u'|'.join(DIGRAPHS) + ')', replace_digraph_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
     return text
 
