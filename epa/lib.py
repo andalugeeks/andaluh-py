@@ -334,7 +334,7 @@ def word_ending_rules(text):
         else:
             return prefix + repl_rules[suffix_vowel]
 
-    def replace_lzr_end_with_case(match):
+    def replace_const_end_with_case(match):
         repl_rules = {
             u'a':u'â', u'A':u'Â', u'á':u'â', u'Á':u'Â',
             u'e':u'ê', u'E':u'Ê', u'é':u'ê', u'É':u'Ê',
@@ -398,8 +398,8 @@ def word_ending_rules(text):
             # Ending word -ado rules
             elif suffix.lower() == u'ado':
                 return prefix + suffix_vowel_a + suffix_vowel_b
-            # Ending word -ido -ído -ida -ída rules
-            elif suffix.lower() in (u'ido', u'ído', u'ida', u'ída'):
+            # Ending word -ido -ído rules
+            elif suffix.lower() in (u'ido', u'ído'):
                 if suffix_vowel_a.isupper():
                     return prefix + u'Í' + suffix_vowel_b
                 else:
@@ -412,7 +412,7 @@ def word_ending_rules(text):
     text = re.sub(ur'\b(\w+?)(e)(ps)\b', replace_eps_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     text = re.sub(ur'\b(\w+?)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(d)\b', replace_d_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     text = re.sub(ur'\b(\w+?)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(s)\b', replace_s_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
-    text = re.sub(ur'\b(\w+?)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(s|l|z|r)\b', replace_lzr_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+    text = re.sub(ur'\b(\w+?)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(b|f|g|j|l|p|r|t|z)\b', replace_const_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
     # Intervowel /d/ replacements
     text = re.sub(ur'\b(\w+?)(a|i|í|Í)(d)(o|a)\b', replace_intervowel_d_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
