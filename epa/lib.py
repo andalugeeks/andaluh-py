@@ -239,15 +239,15 @@ def digraph_rules(text):
 
         return get_vowel_circumflex(vowel_char) + cons_char*2
 
-    def replace_trans_with_case(match):
-        tr_char = match.group(1)
+    def replace_transpost_with_case(match):
+        init_char = match.group(1)
         vowel_char = match.group(2)
         cons_char = match.group(4)
 
         if cons_char.lower() == u'l':
-            return tr_char + get_vowel_circumflex(vowel_char) + cons_char + u'-' + cons_char
+            return init_char + get_vowel_circumflex(vowel_char) + cons_char + u'-' + cons_char
         else:
-            return tr_char + get_vowel_circumflex(vowel_char) + cons_char*2
+            return init_char + get_vowel_circumflex(vowel_char) + cons_char*2
 
     def replace_l_with_case(match):
         vowel_char = match.group(1)
@@ -263,10 +263,10 @@ def digraph_rules(text):
 
     # intersticial / solsticio / superstición / cárstico => interttiçiâh / çorttiçio / çuperttiçión / cárttico
     text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(l|r)(s)(t)', replace_lstrst_with_case, text, flags=re.IGNORECASE)
-    # aerotransporte => aerotrâpporte | translado => trâl-lado | transcendente => trâççendente
-    text = re.sub(ur'(tr)(a)(ns)([bc-dfgh-jklmnn-pqrst-vwxyz]|ç|Ç)', replace_trans_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+    # aerotransporte => aerotrâpporte | translado => trâl-lado | transcendente => trâççendente | postoperatorio => pôttoperatorio | postpalatal => pôppalatal
+    text = re.sub(ur'(tr|p)(a|o)(ns|st)(b|c|ç|Ç|d|f|g|h|j|k|l|m|n|p|q|s|t|v|w|x|y|z)', replace_transpost_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     # abstracto => âttrâtto | adscrito => âccrito
-    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(bs|ds|ns)([bc-dfgh-jklmnn-pqrst-vwxyz]|ç|Ç)', replace_bsns_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(bs|ds|ns)(b|c|ç|Ç|d|f|g|h|j|k|l|m|n|p|q|s|t|v|w|x|y|z)', replace_bsns_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     # atlántico => âl-lántico | orla => ôl-la | adlátere => âl-látere | tesla => têl-la ...
     text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(d|j|r|s|t|x|z)(l)', replace_l_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
