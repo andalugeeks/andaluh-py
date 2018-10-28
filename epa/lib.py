@@ -370,10 +370,52 @@ def word_ending_rules(text):
             # Leave as it is. There shouldn't be any word with -eps ending withough accent.z
             return prefix + suffix_vowel + suffix_const
 
+    def replace_intervowel_d_end_with_case(match):
+
+        exceptions = [
+            "fado", "cado", "nado", "priado",
+            "fabada", "fada", "ada", "hada", "lada", "rada",
+            "aikido", "buxido", "xido", "cuido", "cupido", "descuido", "despido", "ehido", "embido", "fido", "gido", "ido", "infido", "laido", "libido", "nido", "nucleido", "sonido", "suido"
+        ]
+
+        prefix = match.group(1)
+        suffix_vowel_a = match.group(2)
+        suffix_d_char = match.group(3)
+        suffix_vowel_b = match.group(4)
+
+        suffix = suffix_vowel_a + suffix_d_char + suffix_vowel_b
+        word = prefix + suffix
+
+        if word.lower() in exceptions:
+            return word
+        elif not any(s in prefix for s in (u'á',u'é',u'í',u'ó',u'ú',u'Á',u'É',u'Í',u'Ó',u'Ú')):
+            # Ending word -ada rules
+            if suffix.lower() == u'ada':
+                if suffix_vowel_b.isupper():
+                    return prefix + u'Á'
+                else:
+                    return prefix + u'á'
+            # Ending word -ado rules
+            elif suffix.lower() == u'ado':
+                return prefix + suffix_vowel_a + suffix_vowel_b
+            # Ending word -ido -ído -ida -ída rules
+            elif suffix.lower() in (u'ido', u'ído', u'ida', u'ída'):
+                if suffix_vowel_a.isupper():
+                    return prefix + u'Í' + suffix_vowel_b
+                else:
+                    return prefix + u'í' + suffix_vowel_b
+            else:
+                return word
+        else:
+            return word
+
+    text = re.sub(ur'\b(\w+?)(e)(ps)\b', replace_eps_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     text = re.sub(ur'\b(\w+?)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(d)\b', replace_d_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     text = re.sub(ur'\b(\w+?)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(s)\b', replace_s_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     text = re.sub(ur'\b(\w+?)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(s|l|z|r)\b', replace_lzr_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
-    text = re.sub(ur'\b(\w+?)(e)(ps)\b', replace_eps_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+
+    # Intervowel /d/ replacements
+    text = re.sub(ur'\b(\w+?)(a|i|í|Í)(d)(o|a)\b', replace_intervowel_d_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
     return text
 
