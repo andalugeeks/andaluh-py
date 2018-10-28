@@ -244,7 +244,10 @@ def digraph_rules(text):
         vowel_char = match.group(2)
         cons_char = match.group(4)
 
-        return tr_char + get_vowel_circumflex(vowel_char) + cons_char*2
+        if cons_char.lower() == u'l':
+            return tr_char + get_vowel_circumflex(vowel_char) + cons_char + u'-' + cons_char
+        else:
+            return tr_char + get_vowel_circumflex(vowel_char) + cons_char*2
 
     def replace_l_with_case(match):
         vowel_char = match.group(1)
@@ -260,10 +263,10 @@ def digraph_rules(text):
 
     # intersticial / solsticio / superstición / cárstico => interttiçiâh / çorttiçio / çuperttiçión / cárttico
     text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(l|r)(s)(t)', replace_lstrst_with_case, text, flags=re.IGNORECASE)
+    # aerotransporte => aerotrâpporte | translado => trâl-lado | transcendente => trâççendente
+    text = re.sub(ur'(tr)(a)(ns)([bc-dfgh-jklmnn-pqrst-vwxyz]|ç|Ç)', replace_trans_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     # abstracto => âttrâtto | adscrito => âccrito
     text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(bs|ds|ns)([bc-dfgh-jklmnn-pqrst-vwxyz]|ç|Ç)', replace_bsns_with_case, text, flags=re.IGNORECASE|re.UNICODE)
-    # transporte => Trâpporte
-    text = re.sub(ur'(tr)(a)(ns)([b-df-hj-np-tv-xz])', replace_trans_with_case, text, flags=re.IGNORECASE)
     # atlántico => âl-lántico | orla => ôl-la | adlátere => âl-látere | tesla => têl-la ...
     text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(d|j|r|s|t|x|z)(l)', replace_l_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
@@ -355,19 +358,26 @@ def word_ending_rules(text):
     return text
 
 # Main function
-def cas_to_epa(text):
+def cas_to_epa(text, debug=False):
+    rules = [
+        h_rules,
+        x_rules,
+        ch_rules,
+        gj_rules,
+        v_rules,
+        ll_rules,
+        l_rules,
+        psico_pseudo_rules,
+        vaf_rules,
+        word_ending_rules,
+        digraph_rules
+    ]
+
     text = unicode(text, 'utf-8')
-    text = h_rules(text)
-    text = x_rules(text)
-    text = ch_rules(text)
-    text = gj_rules(text)
-    text = v_rules(text)
-    text = ll_rules(text)
-    text = l_rules(text)
-    text = psico_pseudo_rules(text)
-    text = vaf_rules(text)
-    text = digraph_rules(text)
-    text = word_ending_rules(text)
+
+    for rule in rules:
+        text = rule(text)
+        if debug: print rule.func_name + ' => ' + text
 
     return text
 
