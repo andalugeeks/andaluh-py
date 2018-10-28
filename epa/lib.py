@@ -355,9 +355,25 @@ def word_ending_rules(text):
             else:
                 return prefix + repl_rules[suffix_vowel] + 'h'
 
+    def replace_eps_end_with_case(match):
+
+        prefix = match.group(1)
+        suffix_vowel = match.group(2)
+        suffix_const = match.group(3)
+
+        if any(s in prefix for s in (u'á',u'é',u'í',u'ó',u'ú',u'Á',u'É',u'Í',u'Ó',u'Ú')):
+            if suffix_vowel.isupper():
+                return prefix + u'Ê'
+            else:
+                return prefix + u'ê'
+        else:
+            # Leave as it is. There shouldn't be any word with -eps ending withough accent.z
+            return prefix + suffix_vowel + suffix_const
+
     text = re.sub(ur'\b(\w+?)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(d)\b', replace_d_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     text = re.sub(ur'\b(\w+?)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(s)\b', replace_s_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     text = re.sub(ur'\b(\w+?)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(s|l|z|r)\b', replace_lzr_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+    text = re.sub(ur'\b(\w+?)(e)(ps)\b', replace_eps_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
     return text
 

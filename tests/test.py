@@ -26,7 +26,7 @@ def test1():
     assert epa.cas_to_epa('En la Zaragoza asexual se Sabía SÉriamente sILBAR') == u'En la Çaragoça açêççuâh çe Çabía ÇÉriamente çIRBÂH'
     assert epa.cas_to_epa('Transportandonos a la connotación del abstracto solsticio de Alaska, el aislante plástico adsorvente asfixió al aMnésico pseudoescritor granadino de constituciones, para ConMemorar broncas adscritas') == u'Trâpportandonô a la cônnotaçión dêh âttrâtto çorttiçio de Alâkka, el aîl-lante pláttico âççorbente âffîççió al ânnéçico çeudoêccritôh granadino de côttituçionê, para CôMMemorâh broncâ âccritâ'
     assert epa.cas_to_epa('En la postmodernidad, el transcurso de los transportes y translados en postoperatorios transcienden a la postre unas postillas postpalatales apostilladas se transfieren') == u'En la pômmodênnidá, el trâccurço de lô trâpportê y trâl-ladô en pôttoperatoriô trâççienden a la pôttre unâ pôttiyâ pôppalatalê apôttiyadâ çe trâffieren'
-    assert epa.cas_to_epa('Venid a correr en Cádiz con actitud y maldad, para escuchar a Albéniz tocar ápud con virtud de laúd.') == u'Benîh a corrêh en Cádî con âttitûh y mardá, para êccuxâh a Arbénî tocâh ápû con birtûh de laûh.'
+    assert epa.cas_to_epa('Venid a correr en Cádiz con actitud y maldad, para escuchar el tríceps de Albéniz tocar ápud con virtud de laúd.') == u'Benîh a corrêh en Cádî con âttitûh y mardá, para êccuxâh el tríçê de Arbénî tocâh ápû con birtûh de laûh.'
 
 # Lemario test
 def test2(report_all = False):
