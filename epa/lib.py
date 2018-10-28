@@ -236,10 +236,11 @@ def digraph_rules(text):
     def replace_bdnr_s_with_case(match):
         vowel_char = match.group(1)
         cons_char = match.group(2)
+        s_char = match.group(3)
         digraph_char = match.group(4)
 
-        if cons_char.lower() == u'rs':
-            return get_vowel_circumflex(vowel_char) + cons_char + digraph_char*2
+        if cons_char.lower() + s_char.lower() == u'rs':
+            return vowel_char + cons_char + digraph_char*2
         else:
             return get_vowel_circumflex(vowel_char) + digraph_char*2
 
