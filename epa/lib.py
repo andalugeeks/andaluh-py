@@ -233,11 +233,15 @@ def digraph_rules(text):
 
         return vowel_char + lr_char + t_char*2
 
-    def replace_bsns_with_case(match):
+    def replace_bdnr_s_with_case(match):
         vowel_char = match.group(1)
-        cons_char = match.group(3)
+        cons_char = match.group(2)
+        digraph_char = match.group(4)
 
-        return get_vowel_circumflex(vowel_char) + cons_char*2
+        if cons_char.lower() == u'rs':
+            return get_vowel_circumflex(vowel_char) + cons_char + digraph_char*2
+        else:
+            return get_vowel_circumflex(vowel_char) + digraph_char*2
 
     def replace_transpost_with_case(match):
         init_char = match.group(1)
@@ -265,8 +269,8 @@ def digraph_rules(text):
     text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(l|r)(s)(t)', replace_lstrst_with_case, text, flags=re.IGNORECASE)
     # aerotransporte => aerotrâpporte | translado => trâl-lado | transcendente => trâççendente | postoperatorio => pôttoperatorio | postpalatal => pôppalatal
     text = re.sub(ur'(tr|p)(a|o)(ns|st)(b|c|ç|Ç|d|f|g|h|j|k|l|m|n|p|q|s|t|v|w|x|y|z)', replace_transpost_with_case, text, flags=re.IGNORECASE|re.UNICODE)
-    # abstracto => âttrâtto | adscrito => âccrito
-    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(bs|ds|ns)(b|c|ç|Ç|d|f|g|h|j|k|l|m|n|p|q|s|t|v|w|x|y|z)', replace_bsns_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+    # abstracto => âttrâtto | adscrito => âccrito | perspectiva => pêrppêttiba
+    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(b|d|n|r)(s)(b|c|ç|Ç|d|f|g|h|j|k|l|m|n|p|q|s|t|v|w|x|y|z)', replace_bdnr_s_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     # atlántico => âl-lántico | orla => ôl-la | adlátere => âl-látere | tesla => têl-la ...
     text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(d|j|r|s|t|x|z)(l)', replace_l_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
