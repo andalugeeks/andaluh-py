@@ -71,13 +71,12 @@ def x_rules(text):
     """Replacement rules for /ks/ with EPA VAF"""
 
     def replace_with_case(match):
-        whitespaces = match.group(1)
-        x_char = match.group(2)
+        x_char = match.group(1)
 
         if x_char.islower():
-            return whitespaces + VAF
+            return VAF
         else:
-            return whitespaces + VAF_UP
+            return VAF_UP
 
     def replace_intervowel_with_case(match):
         prev_char = match.group(1)
@@ -92,14 +91,16 @@ def x_rules(text):
             return prev_char + VAF*2 + next_char
 
     # If the text begins with /ks/
+    # Xilófono roto => Çilófono roto
     if text[0] == "X": text = VAF_UP + text[1:]
     if text[0] == "x": text = VAF + text[1:]
 
     # If the /ks/ sound is between vowels
+    # Axila => Aççila | Éxito => Éççito
     text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(x)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)', replace_intervowel_with_case, text, flags=re.IGNORECASE)
 
     # Every word starting with /ks/
-    text = re.sub(ur'([\W]+)(x|X)', replace_with_case, text, flags=re.IGNORECASE)
+    text = re.sub(ur'\b(x)', replace_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
     return text
 
