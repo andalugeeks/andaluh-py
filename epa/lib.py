@@ -211,8 +211,8 @@ def vaf_rules(text):
         else:
             return VAF_UP + next_char
 
-    text = re.sub(ur'(z|s)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú|â|ê|î|ô|û|Â|Ê|Î|Ô|Û)', replace_with_case, text, flags=re.IGNORECASE)
-    text = re.sub(ur'(c)(e|i|é|í|É|Í|â|ê|î|ô|û|Â|Ê|Î|Ô|Û)', replace_with_case, text, flags=re.IGNORECASE)
+    text = re.sub(ur'(z|s)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú|â|ê|î|ô|û|Â|Ê|Î|Ô|Û)', replace_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+    text = re.sub(ur'(c)(e|i|é|í|É|Í|ê|î|Ê|Î)', replace_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
     return text
 
