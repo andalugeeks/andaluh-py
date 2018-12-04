@@ -49,8 +49,25 @@ def h_rules(text):
         if word.lower() in H_RULES_EXCEPT.keys():
             return keep_case(word, H_RULES_EXCEPT[word.lower()])
         else:
-            return re.sub(ur'(?<!c)h', '', word, flags=re.IGNORECASE)
+            def replace_with_case(match):
+                h_char = match.group(1)
+                next_char = match.group(2)
 
+                if next_char and h_char.isupper(): 
+                    return next_char.upper()
+                elif next_char and h_char.islower():
+                    return next_char.lower()
+                else:
+                    return ''
+
+            return re.sub(ur'(?<!c)(h)(\w?)', replace_with_case, word, flags=re.IGNORECASE)
+
+    # chihuahua => chiguagua
+    text = re.sub(ur'(?<!c)(h)(ua)', lambda match: u'g' + match.group(2) if match.group(1).islower() else u'G' + match.group(2), text, flags=re.IGNORECASE|re.UNICODE)
+    # cacahuete => cacagûete
+    text = re.sub(ur'(?<!c)(h)(u)(e)', lambda match: u'g' + keep_case(match.group(2), u'ü') + match.group(3) if match.group(1).islower() else u'G' + keep_case(match.group(2), u'ü') + match.group(3), text, flags=re.IGNORECASE|re.UNICODE)
+
+    # General /h/ replacements
     text = re.sub(ur'\b(\w*?)(h)(\w*?)\b', replace_with_case, text, flags=re.IGNORECASE)
     return text
 
@@ -94,7 +111,7 @@ def x_rules(text):
 def ch_rules(text):
     """Replacement rules for /∫/ (voiceless postalveolar fricative)"""
 
-    text = re.sub(ur'(c)(h)', lambda match: 'x' if match.group(1).islower() else 'X', text, flags=re.IGNORECASE)
+    text = re.sub(ur'(c)(h)', lambda match: u'x' if match.group(1).islower() else u'X', text, flags=re.IGNORECASE)
     return text
 
 def gj_rules(text):
@@ -133,7 +150,7 @@ def gj_rules(text):
 
     # buen / abuel / sabues => guen / aguel / sagues
     # TODO: I've the gut feeling the following two regex can be merged into one.
-    text = re.sub(ur'(b)(uen)', keep_case(ur'\1', 'g') + ur'\2', text, flags=re.IGNORECASE|re.UNICODE)
+    text = re.sub(ur'(b)(uen)', lambda match: u'g' + match.group(2) if match.group(1).islower() else u'G' + match.group(2), text, flags=re.IGNORECASE|re.UNICODE)
     text = re.sub(ur'(?P<s>s?)(?P<a>a?)(?P<b>b)(?P<ue>ue)(?P<const>l|s)', replace_g_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
     return text
