@@ -128,26 +128,18 @@ def v_rules(text):
     """Replacing all /v/ (Voiced labiodental fricative) with /b/"""
 
     def replace_with_case(match):
-        n_char = match.group(1)
-        v_char = match.group(2)
+        word = match.group(0)
 
-        if n_char.islower() and v_char.islower():
-            return 'mb'
-        if n_char.isupper() and v_char.isupper():
-            return 'MB'
-        if n_char.isupper() and v_char.islower():
-            return 'Mb'
-        else: 
-            return 'mB'
+        if word.lower() in V_RULES_EXCEPT.keys():
+            return keep_case(word, V_RULES_EXCEPT[word.lower()])
+        else:
+            # NV -> NB -> MB (i.e.: envidia -> embidia)
+            word = re.sub(ur'nv', lambda match: keep_case(match.group(0), 'mb'), word, flags=re.IGNORECASE|re.UNICODE)
+            word = re.sub(ur'v', ur'b', word)
+            word = re.sub(ur'V', ur'B', word)
+            return word
 
-    # NV -> NB -> MB (i.e.: envidia -> embidia)
-    text = re.sub(ur'(n)(v)', replace_with_case, text, flags=re.IGNORECASE)
-    # Exception to v_rule: vis as it falls in homograph with bis
-    text = re.sub(ur'\bvis\b', keep_case(text, u'bî'), text, flags=re.IGNORECASE|re.UNICODE)
-    # v -> b
-    text = re.sub(ur'v', ur'b', text)
-    text = re.sub(ur'V', ur'B', text)
-
+    text = re.sub(ur'\b(\w*?)(v)(\w*?)\b', replace_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     return text
 
 def ll_rules(text):

@@ -43,6 +43,10 @@ GJ_RULES_EXCEPT = {
     u'gin': u'yin', u'jazz': u'yâh', u'jet': u'yêh'
 }
 
+V_RULES_EXCEPT = {
+    u'vis': u'bî', u'ves': u'bêh'
+}
+
 LL_RULES_EXCEPT = {
     u'grill': u'grîh'
 }
@@ -89,5 +93,5 @@ ENDING_RULES_EXCEPTION = {
     # Other exceptions
     u'antîççerôttármico':u'antiçerôttármico', u'eclampçia':u'eclampçia', u'pôttoperatorio':u'pôççoperatorio', u'çáccrito':u'çánccrito', u'manbîh':u'mambîh', u'cômmelináçeo':u'commelináçeo', u'dîmmneçia':u'dînneçia',
     # Other exceptions monosyllables
-    u'as':u'âh', u'clown':u'claun', u'crack':u'crâh', u'down':u'daun', u'ex':u'êh', u'ir':u'îh', u'miss':u'mîh', u'muy':u'mu', u'ôff':u'off', u'os':u'ô', u'para':u'pa', u'ring':u'rin', u'rock':u'rôh', u'spray':u'êppray', u'sprint':u'êpprín', u'wau':u'guau'
+    u'as':u'âh', u'clown':u'claun', u'crack':u'crâh', u'down':u'daun', u'es':u'êh', u'ex':u'êh', u'ir':u'îh', u'miss':u'mîh', u'muy':u'mu', u'ôff':u'off', u'os':u'ô', u'para':u'pa', u'ring':u'rin', u'rock':u'rôh', u'spray':u'êppray', u'sprint':u'êpprín', u'wau':u'guau'
 }
