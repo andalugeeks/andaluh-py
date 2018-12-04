@@ -20,7 +20,7 @@ import epa
 # Basic tests
 def test1():
     assert epa.cas_to_epa('Xenomorfo dice: [haber], que el Éxito y el éxtasis asfixian, si no eres un xilófono Chungo.') == u'Çenomorfo diçe: [abêh], que el Éççito y el éttaçî âffîççian, çi no erê un çilófono Xungo.'
-    assert epa.cas_to_epa('Lleva un Guijarrito, para la VERGÜENZA!') == u'Yeba un Giharrito, pa la BERGUENÇA!'
+    assert epa.cas_to_epa('Lleva un Guijarrito el ABuelo, ¡Qué bueno! ¡para la VERGÜENZA!') == u'Yeba un Giharrito el AGuelo, ¡Qué gueno! ¡pa la BERGUENÇA!'
     assert epa.cas_to_epa('VALLA valla, si vas de ENVIDIA') == u'BAYA baya, çi bâ de EMBIDIA'
     assert epa.cas_to_epa('Alrededor de la Alpaca había un ALfabeto ALTIVO de valkirias malnacidas') == u'Arrededôh de la Arpaca abía un ARfabeto ARTIBO de barkiriâ mânnaçidâ'
     assert epa.cas_to_epa('En la Zaragoza y el Japón asexual se Sabía SÉriamente sILBAR con el COxis') == u'En la Çaragoça y el Hapón açêççuâh çe Çabía ÇÉriamente çIRBÂH con el CÔççî'

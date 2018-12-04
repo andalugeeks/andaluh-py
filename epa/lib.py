@@ -111,6 +111,15 @@ def gj_rules(text):
             word = re.sub(ur'(j)(a|o|u|á|ó|ú)', lambda match: 'h' + match.group(2) if match.group(1).islower() else 'H' + match.group(2), word, flags=re.IGNORECASE|re.UNICODE)
             return word
 
+    def replace_g_with_case(match):
+        s = match.group('s')
+        a = match.group('a')
+        b = match.group('b')
+        ue = match.group('ue')
+        const = match.group('const')
+
+        return s + a + keep_case(b, 'g') + ue + const
+
     text = re.sub(ur'\b(\w*?)(g|j)(e|i|é|í)(\w*?)\b', replace_h_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     text = re.sub(ur'\b(\w*?)(j)(a|o|u|á|ó|ú)(\w*?)\b', replace_h_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
@@ -121,6 +130,11 @@ def gj_rules(text):
     # GÜE,GÜI replacement
     text = re.sub(ur'(g|G)(ü)(e|i|é|í|E|I|É|Í)', ur'\1u\3', text)
     text = re.sub(ur'(g|G)(Ü)(e|i|é|í|E|I|É|Í)', ur'\1U\3', text)
+
+    # buen / abuel / sabues => guen / aguel / sagues
+    # TODO: I've the gut feeling the following two regex can be merged into one.
+    text = re.sub(ur'(b)(uen)', keep_case(ur'\1', 'g') + ur'\2', text, flags=re.IGNORECASE|re.UNICODE)
+    text = re.sub(ur'(?P<s>s?)(?P<a>a?)(?P<b>b)(?P<ue>ue)(?P<const>l|s)', replace_g_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
     return text
 
