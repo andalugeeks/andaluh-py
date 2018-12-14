@@ -36,7 +36,8 @@ DIGRAPHS = [
 H_RULES_EXCEPT = {
     u'haz': u'âh', u'hez': u'êh', u'hoz': u'ôh',
     u'oh': u'ôh',
-    u'yihad': u'yihá'
+    u'yihad': u'yihá',
+    u'h': u'h' # Keep an isolated h as-is
 }
 
 GJ_RULES_EXCEPT = {
