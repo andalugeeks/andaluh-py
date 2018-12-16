@@ -78,11 +78,18 @@ WORDEND_CONST_RULES_EXCEPT = {
     u'stop': u'êttôh', u'bip': u'bip'
 }
 
-WORDEND_D_INTERVOWEL_RULES_EXCEPT = [
-    "fado", "cado", "nado", "priado",
-    "fabada", "fada", "ada", "hada", "lada", "rada",
-    "aikido", "buxido", "xido", "cuido", "cupido", "descuido", "despido", "ehido", "embido", "fido", "gido", "ido", "infido", "laido", "libido", "nido", "nucleido", "sonido", "suido"
-]
+WORDEND_D_INTERVOWEL_RULES_EXCEPT = {
+    # Ending with -ado
+    u"fado": u"fado", u"cado": u"cado", u"nado": u"nado", u"priado": u"priado",
+    # Ending with -ada
+    u"fabada": u"fabada", u'fabadas':u'fabadas', u"fada": u"fada", u"ada": u"ada", u"lada": u"lada", u"rada": u"rada",
+    # Ending with -adas
+    u"adas": u"adas", u"radas": u"radas", u"nadas": u"nadas",
+    # Ending with -ido
+    u"aikido": u"aikido", u"bûççido": u"bûççido", u"çido": u"çido", u"cuido": u"cuido", u"cupido": u"cupido", u"descuido": u"descuido",
+    u"despido": u"despido", u"eido": u"eido", u"embido": u"embido", u"fido": u"fido", u"hido": u"hido", u"ido": u"ido", u"infido": u"infido",
+    u"laido": u"laido", u"libido": u"libido", u"nido": u"nido", u"nucleido": u"nucleido", u"çonido": u"çonido", u"çuido": u"çuido"
+}
 
 ENDING_RULES_EXCEPTION = {
     # Exceptions to digraph rules with nm
