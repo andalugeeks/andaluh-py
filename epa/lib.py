@@ -450,6 +450,22 @@ def exception_rules(text):
     text = re.sub(ur'\b(' + u'|'.join(ENDING_RULES_EXCEPTION.keys()) + ur')\b', replace_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     return text
 
+def word_interaction_rules(text):
+    """Contractions and other word interaction rules"""
+
+    def replace_with_case(match):
+        prefix = match.group(1)
+        l_char = match.group(2)
+        whitespace_char = match.group(3)
+        next_word_char = match.group(4)
+
+        r_char = keep_case(l_char, u'r')
+        return prefix + r_char + whitespace_char + next_word_char
+
+    # Rotating word ending /l/ with /r/ if first next word char is non-r consonant
+    text = re.sub(ur'\b(\w*?)(l)(\s)(b|c|ç|d|f|g|h|j|k|l|m|n|ñ|p|q|s|t|v|w|x|y|z)', replace_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+    return text
+
 # Main function
 def cas_to_epa(text, debug=False):
     rules = [
@@ -464,7 +480,8 @@ def cas_to_epa(text, debug=False):
         vaf_rules,
         word_ending_rules,
         digraph_rules,
-        exception_rules
+        exception_rules,
+        word_interaction_rules
     ]
 
     if type(text) != unicode:
