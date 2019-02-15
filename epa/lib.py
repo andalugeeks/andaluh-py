@@ -27,6 +27,21 @@ def get_vowel_circumflex(vowel):
     else:
         raise EPAError('Not a vowel', vowel)
 
+def get_vowel_tilde(vowel):
+
+    # If no tilde, replace with circumflex
+    if vowel and vowel in VOWELS_ALL_NOTILDE:
+        i = VOWELS_ALL_NOTILDE.find(vowel)
+        return VOWELS_ALL_TILDE[i]
+
+    # If vowel with tilde, leave it as it is
+    elif vowel and vowel in VOWELS_ALL_TILDE:
+        return vowel
+
+    # You shouldn't call this method with a non vowel
+    else:
+        raise EPAError('Not a vowel', vowel)
+
 #TODO: This can be improved to perform replacement in a per character basis
 #NOTE: It assumes replacement_word to be already lowercase
 def keep_case(word, replacement_word):
@@ -417,6 +432,9 @@ def word_ending_rules(text):
             # Ending word -ado rules
             elif suffix.lower() == u'ado':
                 return prefix + suffix_vowel_a + suffix_vowel_b
+            # Ending word -ados -idos -ídos rules
+            elif suffix.lower() in (u'ados', u'idos', u'ídos'):
+                return prefix + get_vowel_tilde(suffix_vowel_a) + get_vowel_circumflex(suffix_vowel_b)
             # Ending word -ido -ído rules
             elif suffix.lower() in (u'ido', u'ído'):
                 if suffix_vowel_a.isupper():
