@@ -3,10 +3,10 @@
 # vim: ts=4
 ###
 # 
-# Copyright (c) 2018 EPA
-# Authors : J. Félix Ontañón <felixonta@gmail.com>
-
-# -*- coding: utf-8 -*- 
+# Copyright (c) 2018-2019 Andalugeeks
+# Authors:
+# - Ksar Feui <a.moreno.losana@gmail.com>
+# - J. Félix Ontañón <felixonta@gmail.com>
 
 # Import package form parent dir https://gist.github.com/JungeAlexander/6ce0a5213f3af56d7369
 import os,sys,inspect

@@ -3,8 +3,10 @@
 # vim: ts=4
 ###
 # 
-# Copyright (c) 2018 EPA
-# Authors : J. Félix Ontañón <felixonta@gmail.com>
+# Copyright (c) 2018-2019 Andalugeeks
+# Authors:
+# - Ksar Feui <a.moreno.losana@gmail.com>
+# - J. Félix Ontañón <felixonta@gmail.com>
 
 # -*- coding: utf-8 -*- 
 
@@ -15,7 +17,7 @@ setup(name='epa',
     description='Translate castellano (español) to EPA andaluz proposal',
     author='J. Félix Ontañón',
     author_email='felixonta@gmail.com',
-    url='https://www.facebook.com/pg/ErPrincipitoAndaluh',
+    url='https://andaluh.es',
     platforms=['win32', 'linux2'],
     license='GNU LESSER GENERAL PUBLIC LICENSE',
 

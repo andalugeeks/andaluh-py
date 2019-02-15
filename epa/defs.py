@@ -3,8 +3,10 @@
 # vim: ts=4
 ###
 # 
-# Copyright (c) 2018 EPA
-# Authors : J. Félix Ontañón <felixonta@gmail.com>
+# Copyright (c) 2018-2019 Andalugeeks
+# Authors:
+# - Ksar Feui <a.moreno.losana@gmail.com>
+# - J. Félix Ontañón <felixonta@gmail.com>
 
 # Useful for calculate the circumflex equivalents.
 VOWELS_ALL_NOTILDE = u'aeiouâêîôûAEIOUÂÊÎÔÛ'
