@@ -88,16 +88,16 @@ def h_rules(text):
     text = re.sub(ur'\b(\w*?)(h)(\w*?)\b', replace_with_case, text, flags=re.IGNORECASE)
     return text
 
-def x_rules(text):
+def x_rules(text, vaf=VAF):
     """Replacement rules for /ks/ with EPA VAF"""
 
     def replace_with_case(match):
         x_char = match.group(1)
 
         if x_char.islower():
-            return VAF
+            return vaf
         else:
-            return VAF_UP
+            return vaf.upper()
 
     def replace_intervowel_with_case(match):
         prev_char = match.group(1)
@@ -107,14 +107,14 @@ def x_rules(text):
         prev_char = get_vowel_circumflex(prev_char)
 
         if x_char.isupper():
-            return prev_char + VAF_UP*2 + next_char
+            return prev_char + vaf.upper()*2 + next_char
         else:
-            return prev_char + VAF*2 + next_char
+            return prev_char + vaf*2 + next_char
 
     # If the text begins with /ks/
     # Xilófono roto => Çilófono roto
-    if text[0] == "X": text = VAF_UP + text[1:]
-    if text[0] == "x": text = VAF + text[1:]
+    if text[0] == "X": text = vaf.upper() + text[1:]
+    if text[0] == "x": text = vaf + text[1:]
 
     # If the /ks/ sound is between vowels
     # Axila => Aççila | Éxito => Éççito
@@ -131,7 +131,7 @@ def ch_rules(text):
     text = re.sub(ur'(c)(h)', lambda match: u'x' if match.group(1).islower() else u'X', text, flags=re.IGNORECASE)
     return text
 
-def gj_rules(text):
+def gj_rules(text, vvf=VVF):
     """Replacing /x/ (voiceless postalveolar fricative) with /h/"""
 
     def replace_h_with_case(match):
@@ -141,8 +141,8 @@ def gj_rules(text):
             return keep_case(word, GJ_RULES_EXCEPT[word.lower()])
         else:
             #TODO: This is an AWFUL way of implementing replacement rules with exceptions. To be fixed.
-            word = re.sub(ur'(g|j)(e|i|é|í)', lambda match: 'h' + match.group(2) if match.group(1).islower() else 'H' + match.group(2), word, flags=re.IGNORECASE|re.UNICODE)
-            word = re.sub(ur'(j)(a|o|u|á|ó|ú)', lambda match: 'h' + match.group(2) if match.group(1).islower() else 'H' + match.group(2), word, flags=re.IGNORECASE|re.UNICODE)
+            word = re.sub(ur'(g|j)(e|i|é|í)', lambda match: vvf + match.group(2) if match.group(1).islower() else vvf.upper() + match.group(2), word, flags=re.IGNORECASE|re.UNICODE)
+            word = re.sub(ur'(j)(a|o|u|á|ó|ú)', lambda match: vvf + match.group(2) if match.group(1).islower() else vvf.upper() + match.group(2), word, flags=re.IGNORECASE|re.UNICODE)
             return word
 
     def replace_g_with_case(match):
@@ -228,7 +228,7 @@ def psico_pseudo_rules(text):
     text = re.sub(ur'(psic|pseud)', replace_psicpseud_with_case, text, flags=re.IGNORECASE)
     return text
 
-def vaf_rules(text):
+def vaf_rules(text, vaf=VAF):
     """Replacing Voiceless alveolar fricative (vaf) /s/ /θ/ with EPA's ç/Ç"""
 
     def replace_with_case(match):
@@ -236,9 +236,9 @@ def vaf_rules(text):
         next_char = match.group(2)
 
         if l_char.islower():
-            return VAF + next_char
+            return vaf + next_char
         else:
-            return VAF_UP + next_char
+            return vaf.upper() + next_char
 
     text = re.sub(ur'(z|s)(a|e|i|o|u|á|é|í|ó|ú|â|ê|î|ô|û)', replace_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     text = re.sub(ur'(c)(e|i|é|í|ê|î)', replace_with_case, text, flags=re.IGNORECASE|re.UNICODE)
@@ -487,7 +487,7 @@ def word_interaction_rules(text):
     return text
 
 # Main function
-def cas_to_epa(text, debug=False):
+def cas_to_epa(text, vaf=VAF, vvf=VVF, debug=False):
     rules = [
         h_rules,
         x_rules,
@@ -512,7 +512,12 @@ def cas_to_epa(text, debug=False):
         return text
 
     for rule in rules:
-        text = rule(text)
+        if rule in [x_rules, vaf_rules]:
+            text = rule(text, vaf)
+        elif rule == gj_rules:
+            text = rule(text, vvf)
+        else:
+            text = rule(text)
         if debug: print rule.func_name + ' => ' + text
 
     return text

@@ -14,7 +14,9 @@ VOWELS_ALL_TILDE = u'áéíóúâêîôûÁÉÍÓÚÂÊÎÔÛ'
 
 # EPA character for Voiceless alveolar fricative /s/ https://en.wikipedia.org/wiki/Voiceless_alveolar_fricative
 VAF = u'ç'
-VAF_UP = u'Ç'
+
+# EPA character for Voiceless velar fricative /x/ https://en.wikipedia.org/wiki/Voiceless_velar_fricative
+VVF = u'h'
 
 # Digraphs producers. (vowel)(const)(const) that triggers the general digraph rule
 DIGRAPHS = [
