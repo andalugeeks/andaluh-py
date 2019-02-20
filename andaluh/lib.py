@@ -11,7 +11,7 @@
 import re
 from exceptions import Exception
 
-from epa.defs import  *
+from andaluh.defs import  *
 
 # Auxiliary functions
 def get_vowel_circumflex(vowel):
@@ -27,7 +27,7 @@ def get_vowel_circumflex(vowel):
 
     # You shouldn't call this method with a non vowel
     else:
-        raise EPAError('Not a vowel', vowel)
+        raise AndaluhError('Not a vowel', vowel)
 
 def get_vowel_tilde(vowel):
 
@@ -42,7 +42,7 @@ def get_vowel_tilde(vowel):
 
     # You shouldn't call this method with a non vowel
     else:
-        raise EPAError('Not a vowel', vowel)
+        raise AndaluhError('Not a vowel', vowel)
 
 #TODO: This can be improved to perform replacement in a per character basis
 #NOTE: It assumes replacement_word to be already lowercase
@@ -487,7 +487,7 @@ def word_interaction_rules(text):
     return text
 
 # Main function
-def cas_to_epa(text, vaf=VAF, vvf=VVF, debug=False):
+def epa(text, vaf=VAF, vvf=VVF, debug=False):
     rules = [
         h_rules,
         x_rules,
@@ -522,11 +522,11 @@ def cas_to_epa(text, vaf=VAF, vvf=VVF, debug=False):
 
     return text
 
-class EPAError(Exception):
+class AndaluhError(Exception):
     def __init__(self, message, errors):
 
         # Call the base class constructor with the parameters it needs
-        super(EPAError, self).__init__(message)
+        super(AndaluhError, self).__init__(message)
 
         # Now for your custom code...
         self.errors = errors

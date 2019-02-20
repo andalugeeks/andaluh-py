@@ -12,17 +12,17 @@
 
 from setuptools import setup
 
-setup(name='epa',
-    version='0.1',
-    description='Translate castellano (español) to EPA andaluz proposal',
+setup(name='andaluh',
+    version='0.1.0',
+    description='Transliterate castellano (español) spelling to andaluz proposals',
     author='J. Félix Ontañón',
     author_email='felixonta@gmail.com',
     url='https://andaluh.es',
     platforms=['win32', 'linux2'],
     license='GNU LESSER GENERAL PUBLIC LICENSE',
 
-    packages = ['epa'],
-    package_dir =  {'epa': 'epa'},
+    packages = ['andaluh'],
+    package_dir =  {'andaluh': 'andaluh'},
 
-    scripts=['bin/cas_to_epa']
+    scripts=['bin/andaluh']
 )

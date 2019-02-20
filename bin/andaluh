@@ -1,0 +1,31 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# vim: ts=4
+###
+# 
+# Copyright (c) 2018 EPA
+# Authors : J. Félix Ontañón <felixonta@gmail.com>
+
+from andaluh import epa
+
+if __name__ == '__main__':
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Transliterate castellano (español) spelling to andaluz proposals')
+    parser.add_argument('text', type=str, help='Text to transliterate. Enclose into quotes if there\'s more than one word')
+    parser.add_argument('-e', type=str, choices=[u's',u'z',u'h'], help='Enforce seseo, zezeo or ceceo instead of cedilla')
+    parser.add_argument('-j', help='Keep /x/ sounds as J instead of /h/', action='store_true')
+
+    args = parser.parse_args()
+
+    if args.e:
+        vaf=args.e
+    else:
+        vaf=u'ç'
+
+    if args.j: 
+        vvf=u'j'
+    else: 
+        vvf=u'h'
+
+    print epa(args.text, vaf=vaf, vvf=vvf)
