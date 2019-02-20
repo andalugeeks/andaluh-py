@@ -18,6 +18,9 @@ setup(name='andaluh',
     author='J. Félix Ontañón',
     author_email='felixonta@gmail.com',
     url='https://andaluh.es',
+    project_urls={
+        "Source Code": "https://github.com/andalugeeks/andaluh-py"
+    }
     platforms=['win32', 'linux2'],
     license='GNU LESSER GENERAL PUBLIC LICENSE',
 
