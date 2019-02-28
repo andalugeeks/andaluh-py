@@ -23,7 +23,7 @@ setup(
     name='andaluh',
     version='0.1.1',
     description='Transliterate español (spanish) spelling to andaluz proposals',
-    long_description=long_description,
+    long_description='Transliterate español (spanish) spelling to andaluz proposals',
     long_description_content_type='text/markdown',
     author='J. Félix Ontañón',
     author_email='felixonta@gmail.com',
