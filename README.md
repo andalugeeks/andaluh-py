@@ -7,7 +7,7 @@ Transliterate español (spanish) spelling to andaluz proposals
 - [Description](#description)
 - [Usage](#usage)
 - [Installation](#installation)
-- [Roadmap](#roadma)
+- [Roadmap](#roadmap)
 - [Support](#support)
 - [Contributing](#contributing)
 
