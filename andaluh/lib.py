@@ -85,7 +85,7 @@ def h_rules(text):
     text = re.sub(ur'(?<!c)(h)(u)(e)', lambda match: u'g' + keep_case(match.group(2), u'ü') + match.group(3) if match.group(1).islower() else u'G' + keep_case(match.group(2), u'ü') + match.group(3), text, flags=re.IGNORECASE|re.UNICODE)
 
     # General /h/ replacements
-    text = re.sub(ur'\b(\w*?)(h)(\w*?)\b', replace_with_case, text, flags=re.IGNORECASE)
+    text = re.sub(ur'\b(\w*?)(h)(\w*?)\b', replace_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     return text
 
 def x_rules(text, vaf=VAF):
