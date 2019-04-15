@@ -9,9 +9,19 @@
 # - J. Félix Ontañón <felixonta@gmail.com>
 
 import re
+import random
 from exceptions import Exception
 
 from andaluh.defs import  *
+
+
+# Regex compilation.
+# Words to ignore in the translitaration in escapeLinks mode. 
+to_ignore_re = re.compile('|'.join([
+    r'(?:https?://)?(?:www\.)?(?:[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6})', # URLs, i.e. andaluh.es, www.andaluh.es, https://www.andaluh.es
+    r'(?:@\w+\b)', # Mentions, i.e. @andaluh
+    r'(?:#\w+\b)' # Hashtags, i.e. #andaluh
+]), re.IGNORECASE|re.UNICODE)
 
 # Auxiliary functions
 def get_vowel_circumflex(vowel):
@@ -487,7 +497,7 @@ def word_interaction_rules(text):
     return text
 
 # Main function
-def epa(text, vaf=VAF, vvf=VVF, debug=False):
+def epa(text, vaf=VAF, vvf=VVF, escapeLinks=False, debug=False):
     rules = [
         h_rules,
         x_rules,
@@ -511,16 +521,39 @@ def epa(text, vaf=VAF, vvf=VVF, debug=False):
     if not text:
         return text
 
-    for rule in rules:
-        if rule in [x_rules, vaf_rules]:
-            text = rule(text, vaf)
-        elif rule == gj_rules:
-            text = rule(text, vvf)
-        else:
-            text = rule(text)
-        if debug: print rule.func_name + ' => ' + text
+    def transliterate(text):
+        for rule in rules:
+            if rule in [x_rules, vaf_rules]:
+                text = rule(text, vaf)
+            elif rule == gj_rules:
+                text = rule(text, vvf)
+            else:
+                text = rule(text)
+            if debug: print rule.func_name + ' => ' + text
 
-    return text
+        return text
+
+    if escapeLinks:
+        ignore = to_ignore_re.findall(text) # Words in the message not to transliterate
+        words = to_ignore_re.split(text) # Spanish words in the message to transliterate
+
+        if not ignore:
+            tags = []
+            text = text
+        else:
+            # Replace words to ignore in the transliteration with randints
+            tags = zip(map(lambda x: str(random.randint(1,999999999)), ignore), ignore)
+            text = ''.join(reduce(lambda x, y: ''.join(x) + ''.join(y), zip(words, [x[0] for x in tags])))
+            if len(words) > len(ignore): text += words[-1]
+
+        if debug: print 'escapeLinks => ' + text
+        text_and = transliterate(text)
+        for tag in tags: text_and = text_and.replace(tag[0], tag[1])
+        if debug: print 'unEscapeLinks => ' + text_and
+        return text_and
+    else:
+        return transliterate(text)
+        
 
 class AndaluhError(Exception):
     def __init__(self, message, errors):
