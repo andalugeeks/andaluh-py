@@ -127,8 +127,8 @@ def x_rules(text, vaf=VAF):
     if text[0] == "x": text = vaf + text[1:]
 
     # If the /ks/ sound is between vowels
-    # Axila => Aççila | Éxito => Éççito
-    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú)(x)(a|e|i|o|u|á|é|í|ó|ú)', replace_intervowel_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+    # Axila => Aççila | Éxito => Éççito | Sexy => Çeççy
+    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú)(x)(a|e|i|o|u|y|á|é|í|ó|ú)', replace_intervowel_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
     # Every word starting with /ks/
     text = re.sub(ur'\b(x)', replace_with_case, text, flags=re.IGNORECASE|re.UNICODE)

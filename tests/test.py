@@ -29,7 +29,7 @@ def test1():
     assert andaluh.epa('Venid todos a correr en anorak de visón a Cádiz con actitud y maldad, para escuchar el tríceps de Albéniz tocar ápud con virtud de laúd.') == u'Benîh tôh a corrêh en anorâh de biçón a Cádî con âttitûh y mardá, pa êccuxâh er tríçê de Arbénî tocâh ápû con birtûh de laûh.'
     assert andaluh.epa('Una comida fabada con fado, y sin descuido será casada y amarrada al acolchado roido.') == u'Una comida fabada con fado, y çin dêccuido çerá caçá y amarrá al acorxao roío.'
     assert andaluh.epa('Los SABuesos ChiHuaHUA comían cacaHuETes, FramBuESas y Heno, ¡y HABLAN con hálito de ESPANGLISH!') == u'Lô ÇAGueçô XiGuaGUA comían cacaGuETê, FramBuEÇâ y Eno, ¡y ABLAN con álito de ÊPPANGLÎ!'
-    assert andaluh.epa('Oye @miguel, la web HTTPS://andaluh.es no sale en google.es pero si en http://google.com #porqueseñor', escapeLinks=True) == u'Oye @miguel, la wêh HTTPS://andaluh.es no çale en google.es pero çi en http://google.com #porqueseñor'
+    assert andaluh.epa('Oye sexy @miguel, la web HTTPS://andaluh.es no sale en google.es pero si en http://google.com #porqueseñor', escapeLinks=True) == u'Oye çêççy @miguel, la wêh HTTPS://andaluh.es no çale en google.es pero çi en http://google.com #porqueseñor'
 # Lemario test
 def test2(report_all = False):
 
