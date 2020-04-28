@@ -49,11 +49,11 @@ Import the python library for your own projects:
 import andaluh
 
 # Transliterate with andaluh EPA proposal
-print andaluh.epa("El veloz murciélago hindú comía feliz cardillo y kiwi. La cigüeña tocaba el saxofón detrás del palenque de paja.")
+print(andaluh.epa("El veloz murciélago hindú comía feliz cardillo y kiwi. La cigüeña tocaba el saxofón detrás del palenque de paja."))
 >>> Er belôh murçiélago indú comía felîh cardiyo y kiwi. La çigueña tocaba er çâççofón detrâh der palenque de paha.
 
 # Enforce seseo instead of cedilla and 'j' for /x/ sounds. Show transliteration debug info.
-print andaluh.epa("El veloz murciélago hindú comía feliz cardillo y kiwi. La cigüeña tocaba el saxofón detrás palenque de paja.", vaf='s', vvf='j', debug=True)
+print(andaluh.epa("El veloz murciélago hindú comía feliz cardillo y kiwi. La cigüeña tocaba el saxofón detrás palenque de paja.", vaf='s', vvf='j', debug=True))
 h_rules => El veloz murciélago indú comía feliz cardillo y kiwi. La cigüeña tocaba el saxofón detrás palenque de paja.
 x_rules => El veloz murciélago indú comía feliz cardillo y kiwi. La cigüeña tocaba el sâssofón detrás palenque de paja.
 ch_rules => El veloz murciélago indú comía feliz cardillo y kiwi. La cigüeña tocaba el sâssofón detrás palenque de paja.
@@ -81,8 +81,9 @@ $ sudo pip install andaluh
 From source code
 
 ```
-~/andaluh-py$ sudo python setup.py install
+~/andaluh-py$ pip install .
 ```
+Remember use `-e` option for [develop mode](https://setuptools.readthedocs.io/en/latest/setuptools.html#development-mode).
 
 ## Roadmap
 
