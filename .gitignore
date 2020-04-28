@@ -2,3 +2,9 @@
 build
 dist
 andaluh.egg-info
+
+# Jetbrains IDE config
+.idea/
+
+.coverage*
+.tox/

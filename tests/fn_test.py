@@ -12,7 +12,7 @@
 import os,sys,inspect
 current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parent_dir = os.path.dirname(current_dir)
-sys.path.insert(0, parent_dir) 
+sys.path.insert(0, parent_dir)
 
 # Now it can be imported :)
 import andaluh
@@ -63,7 +63,3 @@ def test2(report_all = False):
             print(error[0] + " => " + error[1] + ', ' + error[2])
     import pprint
     pprint.pprint(stats)
-
-if __name__ == '__main__':
-    test1()
-    test2(True)
