@@ -31,13 +31,14 @@ setup(
     project_urls={
         "Source Code": "https://github.com/andalugeeks/andaluh-py"
     },
+    python_requires="==3.5.*",
     platforms=['win32', 'linux2'],
     license='GNU LESSER GENERAL PUBLIC LICENSE',
     classifiers=[
         "Topic :: Text Processing",
         "Topic :: Software Development :: Internationalization",
         "Natural Language :: Spanish",
-        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.5",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"
     ],
 
