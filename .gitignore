@@ -8,3 +8,5 @@ andaluh.egg-info
 
 .coverage*
 .tox/
+.env
+.venv
