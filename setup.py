@@ -1,22 +1,18 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # vim: ts=4
-###
-# 
 # Copyright (c) 2018-2019 Andalugeeks
 # Authors:
 # - Ksar Feui <a.moreno.losana@gmail.com>
 # - J. Félix Ontañón <felixonta@gmail.com>
 
-# -*- coding: utf-8 -*- 
 
 from setuptools import setup
-
 # read the contents of your README file
 from os import path
 import io
-this_directory = path.abspath(path.dirname(__file__))
-with io.open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+THIS_DIRECTORY = path.abspath(path.dirname(__file__))
+with io.open(path.join(THIS_DIRECTORY, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
@@ -41,9 +37,7 @@ setup(
         "Programming Language :: Python :: 3.5",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"
     ],
-
-    packages = ['andaluh'],
-    package_dir =  {'andaluh': 'andaluh'},
-
+    packages=['andaluh'],
+    package_dir={'andaluh': 'andaluh'},
     scripts=['bin/andaluh']
 )
