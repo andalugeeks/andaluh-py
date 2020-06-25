@@ -23,18 +23,18 @@ Use from the command line with the **andaluh** tool:
 
 ```
 $ andaluh -h
-usage: andaluh [-h] [-e {s,z,h}] [-j] text
+usage: andaluh [-h] [-e {s,z,h}] [-j] [-i FILE] [text]
 
-Transliterate español (español) spelling to andaluz proposals
+Transliterate español (spanish) spelling to Andalûh EPA.
 
 positional arguments:
-  text        Text to transliterate. Enclose into quotes if there's more than
-              one word
+  text        Text to transliterate. Enclosed in quotes for multiple words.
 
 optional arguments:
   -h, --help  show this help message and exit
-  -e {s,z,h}  Enforce seseo, zezeo or heheo instead of cedilla
+  -e {s,z,h}  Enforce seseo, zezeo or heheo instead of cedilla (standard).
   -j          Keep /x/ sounds as J instead of /h/
+  -i FILE     Transliterates the plain text input file to stdout
 
 $ andaluh "El veloz murciélago hindú comía feliz cardillo y kiwi. La cigüeña tocaba el saxofón detrás del palenque de paja."
 Er belôh murçiélago indú comía felîh cardiyo y kiwi. La çigueña tocaba er çâççofón detrâh der palenque de paha.
