@@ -8,17 +8,39 @@
 # - J. Félix Ontañón <felixonta@gmail.com>
 # - Sergio Soto <scots4ever@gmail.com>
 
+import os.path
+
 from andaluh import epa
 
+def is_valid_file(parser, arg):
+    if not os.path.exists(arg):
+        parser.error("The file %s does not exist!" % arg)
+    else:
+        return arg
+
 if __name__ == '__main__':
+    import sys
     import argparse
 
-    parser = argparse.ArgumentParser(description='Transliterate español (spanish) spelling to andaluz proposals')
-    parser.add_argument('text', type=str, help='Text to transliterate. Enclose into quotes if there\'s more than one word')
-    parser.add_argument('-e', type=str, choices=[u's',u'z',u'h'], help='Enforce seseo, zezeo or heheo instead of cedilla')
-    parser.add_argument('-j', help='Keep /x/ sounds as J instead of /h/', action='store_true')
+    parser = argparse.ArgumentParser(description='Transliterate español (spanish) spelling to Andalûh EPA.')
+
+    parser.add_argument('text', type=str, 
+            help='Text to transliterate. Enclosed in quotes for multiple words.', nargs='?', default='')
+    parser.add_argument('-e', type=str, 
+            choices=[u's',u'z',u'h'], 
+            help='Enforce seseo, zezeo or heheo instead of cedilla (standard).')
+    parser.add_argument('-j', 
+            help='Keep /x/ sounds as J instead of /h/', action='store_true')
+
+    parser.add_argument('-i', dest='filename', 
+            help='Transliterates the plain text input file to stdout', metavar='FILE',
+            type=lambda x: is_valid_file(parser, x))
 
     args = parser.parse_args()
+
+    if len(sys.argv)==1:
+        parser.print_help(sys.stderr)
+        sys.exit(1)
 
     if args.e:
         vaf=args.e
@@ -30,4 +52,12 @@ if __name__ == '__main__':
     else: 
         vvf=u'h'
 
-    print(epa(args.text, vaf=vaf, vvf=vvf))
+    if args.filename:
+        import io
+        file_in = io.open(args.filename, mode="r", encoding="utf-8")
+        for line in file_in.readlines():
+            print(epa(line, vaf=vaf, vvf=vvf), end='')
+    else:
+        print(epa(args.text, vaf=vaf, vvf=vvf))
+    
+    sys.exit(0)
