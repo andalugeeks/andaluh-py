@@ -56,8 +56,8 @@ if __name__ == '__main__':
         import io
         file_in = io.open(args.filename, mode="r", encoding="utf-8")
         for line in file_in.readlines():
-            print(epa(line, vaf=vaf, vvf=vvf), end='')
+            print(epa(line, vaf=vaf, vvf=vvf, escape_links=True), end='')
     else:
-        print(epa(args.text, vaf=vaf, vvf=vvf))
+        print(epa(args.text, vaf=vaf, vvf=vvf, escape_links=True))
     
     sys.exit(0)
