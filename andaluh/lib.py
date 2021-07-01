@@ -33,7 +33,7 @@ from functools import reduce
 # Words to ignore in the translitaration in escapeLinks mode.
 to_ignore_re = re.compile('|'.join([
     # URLs, i.e. andaluh.es, www.andaluh.es, https://www.andaluh.es
-    r'(?:[h|H][t|T][t|T][p|P][s|S]?://)?(?:www\.)?(?:[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z|A-Z]{2,6})',
+    r'(?:[h|H][t|T][t|T][p|P][s|S]?://)?(?:www\.)?(?:[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z|A-Z]{2,6}).*\b',
     r'(?:@\w+\b)',  # Mentions, i.e. @andaluh
     r'(?:#\w+\b)',  # Hashtags, i.e. #andaluh
     r'(?=\b[MCDXLVI]{1,8}\b)M{0,4}(?:CM|CD|D?C{0,3})(?:XC|XL|L?X{0,3})(?:IX|IV|V?I{0,3})' # roman numerals
@@ -343,7 +343,7 @@ def psico_pseudo_rules(text):
             return ps_syllable[1].upper() + ps_syllable[2:]
 
     text = re.sub(
-        r'(psic|pseud)',
+        r'(psic|psiq|pseud)',
         replace_psicpseud_with_case,
         text,
         flags=re.IGNORECASE)
