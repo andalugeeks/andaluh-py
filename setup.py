@@ -20,7 +20,7 @@ with io.open(path.join(THIS_DIRECTORY, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='andaluh',
-    version='0.2.1',
+    version='0.2.2',
     description='Transliterate español (spanish) spelling to andaluz proposals',
     long_description=long_description,
     long_description_content_type='text/markdown',
