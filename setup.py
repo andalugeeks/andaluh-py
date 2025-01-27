@@ -30,7 +30,7 @@ setup(
     project_urls={
         "Source Code": "https://github.com/andalugeeks/andaluh-py"
     },
-    python_requires=">=3.5.*",
+    python_requires=">=3.5",
     platforms=['win32', 'linux2'],
     license='GNU LESSER GENERAL PUBLIC LICENSE',
     classifiers=[
