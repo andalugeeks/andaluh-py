@@ -30,4 +30,4 @@ jobs:
 
       - name: Tox execution
         run: |
-          tox
+          tox -e py
