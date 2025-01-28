@@ -3,7 +3,7 @@
 # vim: ts=4
 ###
 #
-# Copyright (c) 2018-2020 Andalugeeks
+# Copyright (c) 2018-2025 Andalugeeks
 # Authors:
 # - Ksar Feui <a.moreno.losana@gmail.com>
 # - J. Félix Ontañón <felixonta@gmail.com>
@@ -30,15 +30,21 @@ setup(
     project_urls={
         "Source Code": "https://github.com/andalugeeks/andaluh-py"
     },
-    python_requires=">=3.5.*",
-    platforms=['win32', 'linux2'],
+    python_requires=">=3.5,<3.13",
+    platforms=['win32', 'linux2', 'darwin'],
     license='GNU LESSER GENERAL PUBLIC LICENSE',
     classifiers=[
         "Topic :: Text Processing",
         "Topic :: Software Development :: Internationalization",
         "Natural Language :: Spanish",
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
     ],
     packages=['andaluh'],
     package_dir={'andaluh': 'andaluh'},
