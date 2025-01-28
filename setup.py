@@ -20,18 +20,18 @@ with io.open(path.join(THIS_DIRECTORY, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='andaluh',
-    version='0.2.1',
+    version='0.3.1',
     description='Transliterate español (spanish) spelling to andaluz proposals',
     long_description=long_description,
     long_description_content_type='text/markdown',
     author='J. Félix Ontañón',
-    author_email='felixonta@gmail.com',
+    author_email='andalugeeks@gmail.com',
     url='https://andaluh.es',
     project_urls={
         "Source Code": "https://github.com/andalugeeks/andaluh-py"
     },
-    python_requires=">=3.5,<3.13",
-    platforms=['win32', 'linux2', 'darwin'],
+    python_requires=">=3.5",
+    platforms=['win32', 'linux2'],
     license='GNU LESSER GENERAL PUBLIC LICENSE',
     classifiers=[
         "Topic :: Text Processing",
