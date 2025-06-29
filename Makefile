@@ -1,5 +1,6 @@
 .PHONY: create-venv activate-venv install setup-build-tools build publish clean
 
+PYTHON=python3
 VENV_PYTHON=.venv/bin/python3
 PYTHON_TESTS=.venv/bin/pytest
 
@@ -10,7 +11,7 @@ help: ## Muestra esta ayuda
 
 create-venv: ## Crea un entorno virtual
 	@echo "Creando entorno virtual..."
-	@$(VENV_PYTHON) -m venv .venv
+	@$(PYTHON) -m venv .venv
 	@echo "Entorno virtual creado en .venv"
 
 install: create-venv setup-build-tools ## Instala el módulo andaluh en modo desarrollo
@@ -46,3 +47,7 @@ dev-dependencies: create-venv ## Instala las dependencias de desarrollo
 run-tests: dev-dependencies ## Ejecuta los tests
 	@echo "Running tests..."
 	@$(PYTHON_TESTS)
+
+tox-run: dev-dependencies ## Ejecuta tox
+	@echo "Running tox..."
+	@$(VENV_PYTHON) -m tox -e py39,py310,py311,py312,py313
