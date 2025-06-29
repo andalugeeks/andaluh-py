@@ -53,7 +53,7 @@ lint: check-uv sync ## Ejecuta linting con flake8
 	@uv run flake8 andaluh/ bin/
 	@echo "Linting completado"
 
-tox-run: check-uv sync ## Ejecuta tox
+tox-run: check-uv sync ## Ejecuta tox para pruebas en entornos aislados o múltiples versiones de Python
 	@echo "Ejecutando tox..."
 	@uv run tox
 	@echo "Tox completado"
