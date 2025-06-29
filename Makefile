@@ -33,7 +33,7 @@ build: create-venv ## Construye el paquete
 
 publish: create-venv ## Publica el paquete
 	@echo "Publishing..."
-	@twine upload dist/*
+	@$(VENV_PYTHON) -m twine upload dist/*
 
 clean: create-venv ## Limpia el entorno
 	@echo "Cleaning..."
