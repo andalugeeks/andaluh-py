@@ -4,6 +4,7 @@
 
 import csv
 import pprint
+from pathlib import Path
 
 import andaluh
 
@@ -11,7 +12,7 @@ import andaluh
 # Función legacy para compatibilidad (opcional)
 def lemario():
     """Test legacy que muestra estadísticas generales"""
-    file = "./tests/lemario_cas_and.csv"
+    file = Path(__file__).parent / "lemario_cas_and.csv"
     
     transcription_errors = []
     stats = {"total": 0, "ok": 0, "fail": 0}
