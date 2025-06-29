@@ -31,7 +31,7 @@ build: create-venv ## Construye el paquete
 	fi
 	@$(VENV_PYTHON) -m build
 
-publish: create-venv ## Publica el paquete
+publish: create-venv setup-build-tools ## Publica el paquete
 	@echo "Publishing..."
 	@$(VENV_PYTHON) -m twine upload dist/*
 
