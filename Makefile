@@ -1,53 +1,76 @@
-.PHONY: create-venv install setup-build-tools build publish clean help dev-dependencies run-tests
+.PHONY: sync install build publish clean help test lint check tox-run check-uv run demo
 
-PYTHON=python3
-VENV_PYTHON=.venv/bin/python3
-PYTHON_TESTS=.venv/bin/pytest
+check-uv:
+	@if ! command -v uv &> /dev/null; then \
+		echo "uv no está instalado. Instálalo con: curl -LsSf https://astral.sh/uv/install.sh | sh"; \
+		exit 1; \
+	fi
 
 help: ## Muestra esta ayuda
 	@echo "Ayuda: make <target>"
 	@echo "Targets disponibles:"
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-create-venv: ## Crea un entorno virtual
-	@echo "Creando entorno virtual..."
-	@$(PYTHON) -m venv .venv
-	@echo "Entorno virtual creado en .venv"
+sync: check-uv ## Sincroniza dependencias y crea entorno virtual con uv
+	@echo "Sincronizando dependencias con uv..."
+	@uv sync --extra dev
+	@echo "Entorno sincronizado"
 
-install: create-venv setup-build-tools ## Instala el módulo andaluh en modo desarrollo
+install: check-uv sync ## Instala el módulo andaluh en modo desarrollo
 	@echo "Instalando módulo andaluh..."
-	@$(VENV_PYTHON) -m pip install -e .
+	@uv pip install -e .
 	@echo "Módulo andaluh instalado en modo desarrollo"
 
-setup-build-tools: ## Configura las herramientas de construcción
-	@echo "Setting up build tools..."
-	@$(VENV_PYTHON) -m pip install build twine
-
-build: create-venv ## Construye el paquete
-	@echo "Building..."
+build: check-uv ## Construye el paquete
+	@echo "Construyendo paquete..."
 	@if [ -d "dist" ]; then \
-		echo "WARNING: Clean dist directory first."; \
+		echo "ADVERTENCIA: Limpia el directorio dist primero."; \
 		exit 1; \
 	fi
-	@$(VENV_PYTHON) -m build
+	@uv build
+	@echo "Paquete construido"
 
-publish: create-venv setup-build-tools ## Publica el paquete
-	@echo "Publishing..."
-	@$(VENV_PYTHON) -m twine upload dist/*
+publish: check-uv build ## Publica el paquete
+	@echo "Publicando paquete..."
+	@uv publish
+	@echo "Paquete publicado"
 
-clean: create-venv ## Limpia el entorno
-	@echo "Cleaning..."
+clean: check-uv ## Limpia archivos generados
+	@echo "Limpiando..."
 	@rm -rf dist build *.egg-info
+	@rm -rf .tox
+	@find . -type d -name __pycache__ -exec rm -rf {} +
+	@find . -type f -name "*.pyc" -delete
+	@echo "Limpieza completada"
 
-dev-dependencies: create-venv ## Instala las dependencias de desarrollo
-	@echo "Installing development dependencies..."
-	@$(VENV_PYTHON) -m pip install -r dev-requirements.txt
-	@echo "Development dependencies installed"
+test: check-uv sync ## Ejecuta los tests
+	@echo "Ejecutando tests..."
+	@uv run pytest --cov=andaluh tests/
+	@echo "Tests completados"
 
-run-tests: dev-dependencies ## Ejecuta los tests
-	@echo "Running tests..."
-	@$(PYTHON_TESTS)
+lint: check-uv sync ## Ejecuta linting con flake8
+	@echo "Ejecutando linting..."
+	@uv run flake8 andaluh/ bin/
+	@echo "Linting completado"
 
-tox-run: dev-dependencies ## Ejecuta tox
-	@echo "Running tox..."
-	@$(VENV_PYTHON) -m tox -e py39,py310,py311,py312,py313
+tox-run: check-uv sync ## Ejecuta tox
+	@echo "Ejecutando tox..."
+	@uv run tox
+	@echo "Tox completado"
+
+check: test lint ## Ejecuta tests y linting
+	@echo "Verificación completa"
+
+run: check-uv sync ## Ejecuta el CLI andaluh (uso: make run TEXT="tu texto aquí")
+	@echo "Ejecutando andaluh CLI..."
+	@if [ -z "$(TEXT)" ]; then \
+		uv run python bin/andaluh --help; \
+	else \
+		uv run python bin/andaluh "$(TEXT)" $(ARGS); \
+	fi
+
+demo: check-uv sync ## Ejecuta una demostración del CLI andaluh
+	@echo "Demostración de andaluh:"
+	@echo "Texto original: 'Hola, ¿cómo estás? ¡Qué tal el día!'"
+	@echo "Transliteración:"
+	@uv run python bin/andaluh "Hola, ¿cómo estás? ¡Qué tal el día!"
