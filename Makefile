@@ -1,20 +1,53 @@
+.PHONY: create-venv install setup-build-tools build publish clean help dev-dependencies run-tests
 
-setup-build-tools:
+PYTHON=python3
+VENV_PYTHON=.venv/bin/python3
+PYTHON_TESTS=.venv/bin/pytest
+
+help: ## Muestra esta ayuda
+	@echo "Ayuda: make <target>"
+	@echo "Targets disponibles:"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+
+create-venv: ## Crea un entorno virtual
+	@echo "Creando entorno virtual..."
+	@$(PYTHON) -m venv .venv
+	@echo "Entorno virtual creado en .venv"
+
+install: create-venv setup-build-tools ## Instala el módulo andaluh en modo desarrollo
+	@echo "Instalando módulo andaluh..."
+	@$(VENV_PYTHON) -m pip install -e .
+	@echo "Módulo andaluh instalado en modo desarrollo"
+
+setup-build-tools: ## Configura las herramientas de construcción
 	@echo "Setting up build tools..."
-	@. .venv/bin/activate && python -m pip install build twine
+	@$(VENV_PYTHON) -m pip install build twine
 
-build:
+build: create-venv ## Construye el paquete
 	@echo "Building..."
 	@if [ -d "dist" ]; then \
 		echo "WARNING: Clean dist directory first."; \
 		exit 1; \
 	fi
-	@python -m build
+	@$(VENV_PYTHON) -m build
 
-publish:
+publish: create-venv setup-build-tools ## Publica el paquete
 	@echo "Publishing..."
-	@. .venv/bin/activate && twine upload dist/*
+	@$(VENV_PYTHON) -m twine upload dist/*
 
-clean:
+clean: create-venv ## Limpia el entorno
 	@echo "Cleaning..."
 	@rm -rf dist build *.egg-info
+
+dev-dependencies: create-venv ## Instala las dependencias de desarrollo
+	@echo "Installing development dependencies..."
+	@$(VENV_PYTHON) -m pip install -r dev-requirements.txt
+	@echo "Development dependencies installed"
+
+run-tests: dev-dependencies ## Ejecuta los tests
+	@echo "Running tests..."
+	@$(PYTHON_TESTS)
+
+tox-run: dev-dependencies ## Ejecuta tox
+	@echo "Running tox..."
+	@$(VENV_PYTHON) -m tox -e py39,py310,py311,py312,py313
