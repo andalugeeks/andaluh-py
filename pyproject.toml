@@ -11,14 +11,13 @@ authors = [
     {name = "J. Félix Ontañón", email = "andalugeeks@gmail.com"},
     {name = "Sergio Soto Núñez", email = "andalugeeks@gmail.com"},
 ]
-license = {text = "GNU LESSER GENERAL PUBLIC LICENSE"}
+license = "LGPL-3.0-or-later"
 requires-python = ">=3.9"
 classifiers = [
     "Topic :: Text Processing",
     "Topic :: Software Development :: Internationalization",
     "Natural Language :: Spanish",
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
