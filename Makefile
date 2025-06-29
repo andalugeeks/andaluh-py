@@ -1,4 +1,4 @@
-.PHONY: create-venv activate-venv install setup-build-tools build publish clean
+.PHONY: create-venv install setup-build-tools build publish clean help dev-dependencies run-tests
 
 PYTHON=python3
 VENV_PYTHON=.venv/bin/python3
