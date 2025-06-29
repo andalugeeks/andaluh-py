@@ -9,8 +9,6 @@
 # - J. Félix Ontañón <felixonta@gmail.com>
 # - Sergio Soto <scots4ever@gmail.com>
 
-import csv
-import pprint
 import pytest
 
 import andaluh

@@ -4,7 +4,6 @@
 
 import csv
 import pprint
-import pytest
 
 import andaluh
 
