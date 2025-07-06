@@ -10,3 +10,11 @@ andaluh.egg-info
 .tox/
 .env
 .venv
+
+# uv
+.python-version
+uv.lock
+.venv/
+
+# Backup de migración
+backup_migration/
