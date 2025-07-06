@@ -99,3 +99,13 @@ deps =
 commands = 
     flake8 andaluh/ bin/
 """ 
+
+# Configuración de commitizen
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.3.1"
+version_files = [
+    "pyproject.toml:version"
+]
+tag_format = "v$version"
+update_changelog_on_bump = true 
