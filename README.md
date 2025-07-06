@@ -32,7 +32,7 @@ This package introduces transliteration functions to convert *español* (spanish
 
 ### Command line tool
 
-Use from the command line with the **andaluh** tool:
+Use EPA transliterator from the command line with the **andaluh** tool:
 
 ```bash
 $ andaluh -h
@@ -54,6 +54,38 @@ Er belôh murçiélago indú comía felîh cardiyo y kiwi. La çigueña tocaba e
 
 $ andaluh -e z -j "El veloz murciélago hindú comía feliz cardillo y kiwi. La cigüeña tocaba el saxofón detrás del palenque de paja."
 Er belôh murziélago indú comía felîh cardiyo y kiwi. La zigueña tocaba er zâzzofón detrâh der palenque de paja.
+```
+
+You also can transliterate files using the `-i` option:
+
+```bash
+$ andaluh -i input.txt > output.txt
+```
+
+### EPA Syllabifier
+
+The package includes a **syllabify** tool for syllabifying words using EPA rules:
+
+```bash
+$ syllabify -h
+usage: syllabify [-h] [--word WORD] [--file FILE]
+
+Syllabify a word
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --word WORD, -w WORD  The EPA word to syllabify
+  --file FILE, -f FILE  The file to syllabify
+
+# Syllabify a single word
+$ syllabify --word "murciélago"
+mur-cié-la-go
+
+$ syllabify -w "andaluz"
+an-da-luz
+
+# Syllabify an entire file
+$ syllabify --file input.txt
 ```
 
 ### Development usage

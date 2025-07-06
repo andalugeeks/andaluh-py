@@ -1,4 +1,6 @@
-.PHONY: sync install build publish clean help test lint check tox-run check-uv run demo update-dev-requirements check-dev-requirements
+.DEFAULT_GOAL := help
+
+.PHONY: sync install build publish clean help test lint check tox-run check-uv run demo demo-transliterate demo-syllabify update-dev-requirements check-dev-requirements add-dep
 
 check-uv:
 	@if ! command -v uv &> /dev/null; then \
@@ -15,12 +17,20 @@ help: ## Muestra esta ayuda
 
 sync: check-uv ## Sincroniza dependencias y crea entorno virtual con uv
 	@echo "🔄 Sincronizando dependencias con uv..."
-	@uv sync --extra dev
-	@echo "📝 Actualizando dev-requirements.txt..."
-	@$(MAKE) update-dev-requirements --no-print-directory
+	@uv sync
 	@echo "✅ Entorno sincronizado"
 
+sync-dev: check-uv ## Sincroniza dependencias de desarrollo
+	@echo "🔄 Sincronizando dependencias con uv..."
+	@uv sync --extra dev
+	@echo "✅ Entorno dev sincronizado"
+
 install: check-uv sync ## Instala el módulo andaluh en modo desarrollo
+	@echo "⚙️  Instalando módulo andaluh en modo desarrollo..."
+	@uv pip install -e .
+	@echo "✅ Módulo andaluh instalado en modo desarrollo"
+
+install-editable: check-uv sync ## Instala el módulo andaluh en modo desarrollo
 	@echo "⚙️  Instalando módulo andaluh en modo desarrollo..."
 	@uv pip install -e .
 	@echo "✅ Módulo andaluh instalado en modo desarrollo"
@@ -47,7 +57,7 @@ clean: check-uv ## Limpia archivos generados
 	@find . -type f -name "*.pyc" -delete 2>/dev/null || true
 	@echo "✅ Limpieza completada"
 
-test: check-uv sync ## Ejecuta los tests
+test: check-uv sync-dev ## Ejecuta los tests
 	@echo "🧪 Ejecutando tests..."
 	@uv run pytest --cov=andaluh tests/
 	@echo "✅ Tests completados"
@@ -73,11 +83,25 @@ run: check-uv sync ## Ejecuta el CLI andaluh (uso: make run TEXT="tu texto aquí
 		uv run python bin/andaluh "$(TEXT)" $(ARGS); \
 	fi
 
-demo: check-uv sync ## Ejecuta una demostración del CLI andaluh
-	@echo "🎯 Demostración de andaluh:"
+demo-transliterate: check-uv sync ## Ejecuta una demostración del CLI andaluh
+	@echo "🎯 Demostración de andaluh (transliteración):"
 	@echo "Texto original: 'Hola, ¿cómo estás? ¡Qué tal el día!'"
 	@echo "Transliteración:"
 	@uv run python bin/andaluh "Hola, ¿cómo estás? ¡Qué tal el día!"
+
+demo-syllabify: check-uv sync ## Ejecuta una demostración del CLI syllabify
+	@echo "🎯 Demostración de syllabify (silabificación):"
+	@echo "Palabra original: 'murçiélago'"
+	@echo "Silabificación:"
+	@uv run python bin/syllabify --word "murçiélago"
+	@echo ""
+	@echo "Palabra original: 'andalûh'"
+	@echo "Silabificación:"
+	@uv run python bin/syllabify --word "andalûh"
+	@echo ""
+	@echo "Palabra original: 'êppañôh'"
+	@echo "Silabificación:"
+	@uv run python bin/syllabify --word "êppañôh"
 
 update-dev-requirements: check-uv ## Actualiza dev-requirements.txt desde pyproject.toml
 	@echo "📝 Actualizando dev-requirements.txt desde pyproject.toml..."
@@ -100,3 +124,21 @@ check-dev-requirements: check-uv ## Verifica si dev-requirements.txt está sincr
 		echo "✅ dev-requirements.txt está sincronizado"; \
 		rm -f dev-requirements.txt.expected; \
 	fi
+
+add-dep: check-uv ## Añade dependencias a pyproject.toml (uso: make add-dep DEPS="paquete1 paquete2" o make add-dep DEPS="paquete1 paquete2" DEV=true)
+	@if [ -z "$(DEPS)" ]; then \
+		echo "❌ Debes especificar al menos una dependencia"; \
+		echo "📖 Uso: make add-dep DEPS=\"paquete1 paquete2\""; \
+		echo "📖 Para dependencias de desarrollo: make add-dep DEPS=\"paquete1 paquete2\" DEV=true"; \
+		exit 1; \
+	fi
+	@if [ "$(DEV)" = "true" ]; then \
+		echo "📦 Añadiendo dependencias de desarrollo: $(DEPS)"; \
+		uv add --dev $(DEPS); \
+	else \
+		echo "📦 Añadiendo dependencias: $(DEPS)"; \
+		uv add $(DEPS); \
+	fi
+	@echo "📝 Actualizando dev-requirements.txt..."
+	@$(MAKE) update-dev-requirements --no-print-directory
+	@echo "✅ Dependencias añadidas y dev-requirements.txt actualizado"
