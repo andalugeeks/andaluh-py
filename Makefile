@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-.PHONY: sync install build publish clean help test lint check tox-run check-uv run demo demo-transliterate demo-syllabify update-dev-requirements check-dev-requirements add-dep
+.PHONY: sync install build publish clean help test lint check tox-run check-uv run demo-transliterate demo-syllabify update-dev-requirements check-dev-requirements add-dep
 
 check-uv:
 	@if ! command -v uv &> /dev/null; then \
