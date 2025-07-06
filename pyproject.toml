@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "andaluh"
-version = "0.4.0"
+version = "0.4.1"
 description = "Transliterate español (spanish) spelling to andaluz proposals"
 readme = "README.md"
 authors = [
@@ -103,7 +103,7 @@ commands =
 # Configuración de commitizen
 [tool.commitizen]
 name = "cz_conventional_commits"
-version = "0.4.0"
+version = "0.4.1"
 version_files = [
     "pyproject.toml:version"
 ]

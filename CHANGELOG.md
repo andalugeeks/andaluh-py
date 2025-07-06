@@ -1,3 +1,9 @@
+## v0.4.1 (2025-07-06)
+
+### Fix
+
+- forces pipelines execution
+
 ## v0.4.0 (2025-07-06)
 
 ### Feat
