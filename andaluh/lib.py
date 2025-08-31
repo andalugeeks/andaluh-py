@@ -33,11 +33,11 @@ from functools import reduce
 # Words to ignore in the translitaration in escapeLinks mode.
 to_ignore_re = re.compile('|'.join([
     # URLs, i.e. andaluh.es, www.andaluh.es, https://www.andaluh.es
-    r'(?:[h|H][t|T][t|T][p|P][s|S]?://)?(?:www\.)?(?:[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z|A-Z]{2,6})[\/|\?]?[-a-zA-Z0-9@:%._\+~#=&]{0,256}',  # NOQA 501
+    r'(?:https?://)?(?:www\.)?(?:[A-Za-z0-9-]+\.)+[A-Za-z]{2,}(?:[/?#][^\s]*)?',  # Cover full path/query/fragment  # NOQA 501
     r'(?:@\w+\b)',  # Mentions, i.e. @andaluh
     r'(?:#\w+\b)',  # Hashtags, i.e. #andaluh
     r'(?=\b[MCDXLVI]{1,8}\b)M{0,4}(?:CM|CD|D?C{0,3})(?:XC|XL|L?X{0,3})(?:IX|IV|V?I{0,3})' # roman numerals  # NOQA 501
-]), re.UNICODE)
+]), re.UNICODE | re.IGNORECASE)
 
 # Auxiliary functions
 
