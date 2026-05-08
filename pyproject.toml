@@ -24,6 +24,9 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
+dependencies = [
+    "epa-syllabifier~=0.3.0",
+]
 
 [project.urls]
 Homepage = "https://andaluh.es"
@@ -43,7 +46,10 @@ dev = [
 
 [tool.setuptools]
 packages = ["andaluh"]
-script-files = ["bin/andaluh"]
+script-files = [
+    "bin/andaluh", 
+    "bin/syllabify"
+]
 
 [tool.setuptools.package-dir]
 "" = "."
