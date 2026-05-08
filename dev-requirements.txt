@@ -75,5 +75,5 @@ typing-extensions==4.14.0 ; python_full_version < '3.11'
     # via
     #   exceptiongroup
     #   tox
-virtualenv==20.31.2
+virtualenv==20.36.1
     # via tox
