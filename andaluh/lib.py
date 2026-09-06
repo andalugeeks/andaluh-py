@@ -717,7 +717,10 @@ def word_interaction_rules(text):
 # Main function
 
 
-def epa(text, vaf=VAF, vvf=VVF, escape_links=False, debug=False):  # noqa: C901
+def epa(text, vaf=VAF, vvf=VVF, escape_links=False, contractions=False,
+        debug=False):  # noqa: C901
+    from andaluh.contractions import apply_contractions
+
     rules = [
         h_rules,
         x_rules,
@@ -779,9 +782,14 @@ def epa(text, vaf=VAF, vvf=VVF, escape_links=False, debug=False):  # noqa: C901
             text_and = text_and.replace(tag[0], tag[1])
         if debug:
             print('unEscapeLinks => ' + text_and)
+        if contractions:
+            text_and = apply_contractions(text_and)
         return text_and
     else:
-        return transliterate(text)
+        text_and = transliterate(text)
+        if contractions:
+            text_and = apply_contractions(text_and)
+        return text_and
 
 
 class AndaluhError(Exception):
